@@ -31,6 +31,7 @@ import sys
 import os
 
 REPO_PATH = '/home/alex'
+TRACE_PATH = '/data/ACF/equinix-chicago.dirA.20140619-130900.dat'
 
 def load_module(file_name, module_name):
     spec = importlib.util.spec_from_file_location(module_name, file_name)
@@ -224,7 +225,7 @@ class RunCAIDATrace(BfRuntimeTest):
     def runTest(self):
         # Load CADIA trace
         fiveTupleList = utils.load_trace(
-            "/data/ACF/equinix-chicago.dirA.20140619-130900.dat", True, 0.001)
+            TRACE_PATH, True, 0.001)
 
         # Insert the first 10 flowws into the ACF
         A_flows = 10 
