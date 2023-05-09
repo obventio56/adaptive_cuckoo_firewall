@@ -30,6 +30,8 @@ import importlib.util
 import sys
 import os
 
+REPO_PATH = '/home/alex'
+
 def load_module(file_name, module_name):
     spec = importlib.util.spec_from_file_location(module_name, file_name)
     module = importlib.util.module_from_spec(spec)
@@ -37,8 +39,8 @@ def load_module(file_name, module_name):
     spec.loader.exec_module(module)
     return module
 
-utils = load_module(os.environ['REPO_PATH'] + "/tofino_acf_firewall/tofino_poc/util.py", "utils")
-ACF = load_module(os.environ['REPO_PATH'] + "/tofino_acf_firewall/ACF.py", "ACF")
+utils = load_module(REPO_PATH + "/tofino_acf_firewall/tofino_poc/util.py", "utils")
+ACF = load_module(REPO_PATH + "/tofino_acf_firewall/ACF.py", "ACF")
 
 p4_program_name = "src"
 
