@@ -1,0 +1,32 @@
+digraph table_deps {
+  splines=ortho; rankdir=LR;
+  label="Program: src
+RunId: 694fce3f4c66e5ec
+";
+  labelloc=t; labeljust=l;
+  { "tbl_src188"; "tbl_src185"; "tbl_action_compute_fingerprint"; "SwitchIngress.bypass_egress.bypass_egress"; }
+  { rank = same; "tbl_src190"; "tbl_action_check_membership_stage_three"; "tbl_action_check_membership_stage_two"; "tbl_action_check_membership_stage_one"; }
+  { rank = same; "tbl_drop"; }
+   "tbl_src188" -> "tbl_src185" [ label= "",color=green ];
+   "tbl_src188" -> "tbl_action_compute_fingerprint" [ label= "",color=green ];
+   "tbl_action_compute_fingerprint" -> "tbl_src190" [ label= "",color=green ];
+   "tbl_action_compute_fingerprint" -> "tbl_action_check_membership_stage_three" [ label= "",color=green ];
+   "tbl_action_compute_fingerprint" -> "tbl_action_check_membership_stage_two" [ label= "",color=green ];
+   "tbl_action_compute_fingerprint" -> "tbl_action_check_membership_stage_one" [ label= "",color=green ];
+   "tbl_action_compute_fingerprint" -> "tbl_drop" [ label= "",color=green ];
+   "tbl_src188" -> "tbl_src190" [ label= "",color=red ];
+   "tbl_action_compute_fingerprint" -> "tbl_action_check_membership_stage_three" [ label= "",color=gold ];
+   "tbl_action_compute_fingerprint" -> "tbl_action_check_membership_stage_two" [ label= "",color=gold ];
+   "tbl_action_compute_fingerprint" -> "tbl_action_check_membership_stage_one" [ label= "",color=gold ];
+   "tbl_action_check_membership_stage_one" -> "tbl_drop" [ label= "",color=blue ];
+   "tbl_action_check_membership_stage_two" -> "tbl_drop" [ label= "",color=blue ];
+   "tbl_action_check_membership_stage_three" -> "tbl_drop" [ label= "",color=blue ];
+   "tbl_action_check_membership_stage_three" -> "tbl_drop" [ label= "",color=pink ];
+   "tbl_action_check_membership_stage_two" -> "tbl_drop" [ label= "",color=pink ];
+   "tbl_action_check_membership_stage_one" -> "tbl_drop" [ label= "",color=pink ];
+  { rank=max;
+    subgraph cluster_legend { node [ shape=record; fontsize=10];
+      empty [label=<<table border="0" cellborder="0"><tr><td colspan="8">Edge colors</td></tr><tr><td><font color="gold">ixbar_read</font></td><td><font color="blue">action_read</font></td><td><font color="red">output</font></td><td><font color="navy">cont_conflict</font></td><td><font color="cyan">reduction_or_read</font></td><td><font color="cyan">reduction_or_output</font></td><td><font color="pink">anti_table_read</font></td><td><font color="pink">anti_next_action_read</font></td><td><font color="pink">anti_next_table_data</font></td><td><font color="pink">anti_next_table_control</font></td><td><font color="pink">anti_next_table_metadata</font></td><td><font color="black">exit</font></td><td><font color="green">control_action</font></td><td><font color="green">control_condition_true</font></td><td><font color="green">control_condition_false</font></td><td><font color="green">control_table_hit</font></td><td><font color="green">control_table_miss</font></td><td><font color="green">control_default_next_table</font></td><td><font color="green">control_exit</font></td></tr></table>>;]
+    }
+  }
+}

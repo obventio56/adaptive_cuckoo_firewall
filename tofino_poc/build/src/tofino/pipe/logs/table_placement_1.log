@@ -1,0 +1,584 @@
+Table Placement ignores container conflicts? 0
+Table placement starting on pipe with DEFAULT PLACEMENT approach
+ingress: [8] 0
+  cond-4(ingress::ig_intr_md.ingress_port == 0; => $true, 1 => $false)
+    $true: [13]
+      tbl_src185
+    $false: [9] 1
+      tbl_src188
+      cond-5(ingress::hdr.ipv4.protocol == 1; => $true, 1 => $false)
+        $true: [12]
+          tbl_src190
+        $false: [10] 1 10 100 1111
+          tbl_action_compute_fingerprint
+          tbl_action_check_membership_stage_one
+            stateful SwitchIngress.stage_one 1024
+          tbl_action_check_membership_stage_two
+            stateful SwitchIngress.stage_two 1024
+          tbl_action_check_membership_stage_three
+            stateful SwitchIngress.stage_three 1024
+          cond-6(ingress::ig_md.stage_one_result; => $true, ingress::ig_md.stage_two_result; => $true, ingress::ig_md.stage_three_result; => $true, 1 => $false)
+            $false: [11]
+              tbl_drop
+  bypass_egress_bypass_egress
+egress: [14]
+
+stage 0, work: [ 1828536 ], partly placed 0, placed 0
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+try_place_table(cond-4, stage=0)
+    Merging with match table tbl_src188 and tag $false
+    Initial stage is 0, initial entries is 1
+  picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src188
+  picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src188
+    Selected stage: 0    Furthest stage: 0
+    try_place_table returning 1 of tbl_src188 in stage 0
+    Merging with match table tbl_src185 and tag $true
+    Initial stage is 0, initial entries is 1
+  picked layout for tbl_src185 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src185
+  picked layout for tbl_src185 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src185
+    Selected stage: 0    Furthest stage: 0
+    try_place_table returning 1 of tbl_src185 in stage 0
+    Pl vector: [ tbl_src188, tbl_src185 ]
+bypass_egress_bypass_egress is not a gateway! Aborting search for merge choices
+try_place_table(bypass_egress_bypass_egress, stage=0)
+    Initial stage is 0, initial entries is 512
+  picked layout for bypass_egress_bypass_egress FormatType(02) layout: 512V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for bypass_egress_bypass_egress
+  picked layout for bypass_egress_bypass_egress FormatType(02) layout: 512V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for bypass_egress_bypass_egress
+    Selected stage: 0    Furthest stage: 0
+    try_place_table returning 512 of bypass_egress_bypass_egress in stage 0
+    Pl vector: [ bypass_egress_bypass_egress ]
+found 3 tables that could be placed: [ tbl_src188, tbl_src185, bypass_egress_bypass_egress ]
+Initial best is first table seen: tbl_src188
+For trial t : tbl_src185 with best: tbl_src188
+    Keeping best tbl_src188 for reason: longer downward prop control-included dependence tail chain
+For trial t : bypass_egress_bypass_egress with best: tbl_src188
+    Keeping best tbl_src188 for reason: longer downward prop control-included dependence tail chain
+placing 1 entries of tbl_src188 (with gw cond-4, result tag $false) in stage 0(0) FormatType(02)
+potential backfill bypass_egress_bypass_egress before tbl_src188
+stage 0, work: [ 1829131, 1828603 ], partly placed 0, placed 1
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+tbl_src185 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_src185, stage=0)
+    Initial stage is 0, initial entries is 1
+  picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_src185 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src185
+  picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_src185 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src185
+    Selected stage: 0    Furthest stage: 1
+    try_place_table returning 1 of tbl_src185 in stage 0
+    Pl vector: [ tbl_src185 ]
+    - skipping tbl_src188 as its already done
+try_place_table(cond-5, stage=0)
+    Merging with match table tbl_action_compute_fingerprint and tag $false
+    Initial stage is 0, initial entries is 1
+  picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_action_compute_fingerprint FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_compute_fingerprint
+  picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_action_compute_fingerprint FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_compute_fingerprint
+    Selected stage: 0    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_compute_fingerprint in stage 0
+    Merging with match table tbl_src190 and tag $true
+    - dependency between tbl_src188 and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_src190 in stage 1
+    Pl vector: [ tbl_action_compute_fingerprint, tbl_src190 ]
+found 3 tables that could be placed: [ tbl_src185, tbl_action_compute_fingerprint, tbl_src190 ]
+Initial best is first table seen: tbl_src185
+For trial t : tbl_action_compute_fingerprint with best: tbl_src185
+    Updating best to tbl_action_compute_fingerprint from tbl_src185 for reason: longer downward prop control-included dependence tail chain
+For trial t : tbl_src190 with best: tbl_action_compute_fingerprint
+    Keeping best tbl_action_compute_fingerprint for reason: earlier stage calculated
+placing 1 entries of tbl_action_compute_fingerprint (with gw cond-5, result tag $false) in stage 0(1) FormatType(02)
+stage 0, work: [ 1829131, 1829129, 1828731 ], partly placed 0, placed 2
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+tbl_src185 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_src185, stage=0)
+    Initial stage is 0, initial entries is 1
+  picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_action_compute_fingerprint FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_src185 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src185
+  picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_action_compute_fingerprint FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_src185 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src185
+    Selected stage: 0    Furthest stage: 1
+    try_place_table returning 1 of tbl_src185 in stage 0
+    Pl vector: [ tbl_src185 ]
+tbl_src190 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_src190, stage=0)
+    - dependency between tbl_src188 and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_src190 in stage 1
+    Pl vector: [ tbl_src190 ]
+    - skipping tbl_action_compute_fingerprint as its already done
+tbl_action_check_membership_stage_one is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_one, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_one in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_one ]
+tbl_action_check_membership_stage_two is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_two, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_two
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_two
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_two in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_two ]
+tbl_action_check_membership_stage_three is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_three, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_three
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_three
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_three in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_three ]
+  - skipping cond-6 due to in-sequence control dependence on tbl_action_check_membership_stage_one
+found 5 tables that could be placed: [ tbl_src185, tbl_src190, tbl_action_check_membership_stage_one, tbl_action_check_membership_stage_two, tbl_action_check_membership_stage_three ]
+Initial best is first table seen: tbl_src185
+For trial t : tbl_src190 with best: tbl_src185
+    Keeping best tbl_src185 for reason: earlier stage calculated
+For trial t : tbl_action_check_membership_stage_one with best: tbl_src185
+    Keeping best tbl_src185 for reason: earlier stage calculated
+For trial t : tbl_action_check_membership_stage_two with best: tbl_src185
+    Keeping best tbl_src185 for reason: earlier stage calculated
+For trial t : tbl_action_check_membership_stage_three with best: tbl_src185
+    Keeping best tbl_src185 for reason: earlier stage calculated
+placing 1 entries of tbl_src185 in stage 0(2) FormatType(02)
+stage 0, work: [ 1829129, 1828731 ], partly placed 0, placed 3
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+tbl_src190 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_src190, stage=0)
+    - dependency between tbl_src188 and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_src190 in stage 1
+    Pl vector: [ tbl_src190 ]
+    - skipping tbl_action_compute_fingerprint as its already done
+tbl_action_check_membership_stage_one is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_one, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_one in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_one ]
+tbl_action_check_membership_stage_two is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_two, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_two
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_two
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_two in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_two ]
+tbl_action_check_membership_stage_three is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_three, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_three
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_three
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_three in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_three ]
+  - skipping cond-6 due to in-sequence control dependence on tbl_action_check_membership_stage_one
+found 4 tables that could be placed: [ tbl_src190, tbl_action_check_membership_stage_one, tbl_action_check_membership_stage_two, tbl_action_check_membership_stage_three ]
+Initial best is first table seen: tbl_src190
+For trial t : tbl_action_check_membership_stage_one with best: tbl_src190
+    Updating best to tbl_action_check_membership_stage_one from tbl_src190 for reason: longer downward prop control-included dependence tail chain
+For trial t : tbl_action_check_membership_stage_two with best: tbl_action_check_membership_stage_one
+    Updating best to tbl_action_check_membership_stage_two from tbl_action_check_membership_stage_one for reason: default choice
+For trial t : tbl_action_check_membership_stage_three with best: tbl_action_check_membership_stage_two
+    Updating best to tbl_action_check_membership_stage_three from tbl_action_check_membership_stage_two for reason: default choice
+try to backfill bypass_egress_bypass_egress before tbl_src188
+picked layout for bypass_egress_bypass_egress FormatType(02) layout: 512V ixbar:0B/0b match:0B/0b
+  entries:0 srams:0 maprams:0 tcams:0 afi:0
+picked layout for tbl_src188 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:0 srams:0 maprams:0 tcams:0 afi:0
+picked layout for tbl_action_compute_fingerprint FormatType(02) layout: 0hV ixbar:0B/0b match:0B/0b
+  way:{ g:1 e:0 w:1 }
+  entries:0 srams:0 maprams:0 tcams:0 afi:0
+picked layout for tbl_src185 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:0 srams:0 maprams:0 tcams:0 afi:0
+Trying to allocate imem for bypass_egress_bypass_egress
+placing 512 entries of bypass_egress_bypass_egress in stage 0(0) FormatType(02) (backfilled)
+stage 0, work: [ 1829129, 1828731 ], partly placed 0, placed 4
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+tbl_src190 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_src190, stage=0)
+    - dependency between tbl_src188 and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_src190 in stage 1
+    Pl vector: [ tbl_src190 ]
+    - skipping tbl_action_compute_fingerprint as its already done
+tbl_action_check_membership_stage_one is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_one, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_one in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_one ]
+tbl_action_check_membership_stage_two is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_two, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_two
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_two
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_two in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_two ]
+tbl_action_check_membership_stage_three is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_three, stage=0)
+    - dependency between tbl_action_compute_fingerprint and table advances stage
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_three
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_three
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_action_check_membership_stage_three in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_three ]
+  - skipping cond-6 due to in-sequence control dependence on tbl_action_check_membership_stage_one
+found 4 tables that could be placed: [ tbl_src190, tbl_action_check_membership_stage_one, tbl_action_check_membership_stage_two, tbl_action_check_membership_stage_three ]
+Initial best is first table seen: tbl_src190
+For trial t : tbl_action_check_membership_stage_one with best: tbl_src190
+    Updating best to tbl_action_check_membership_stage_one from tbl_src190 for reason: longer downward prop control-included dependence tail chain
+For trial t : tbl_action_check_membership_stage_two with best: tbl_action_check_membership_stage_one
+    Updating best to tbl_action_check_membership_stage_two from tbl_action_check_membership_stage_one for reason: default choice
+For trial t : tbl_action_check_membership_stage_three with best: tbl_action_check_membership_stage_two
+    Updating best to tbl_action_check_membership_stage_three from tbl_action_check_membership_stage_two for reason: default choice
+placing 1 entries of tbl_action_check_membership_stage_three in stage 1(10) FormatType(022)
+stage 1, work: [ 1829129, 1828731 ], partly placed 0, placed 5
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+tbl_src190 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_src190, stage=1)
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+    Selected stage: 1    Furthest stage: 2
+    try_place_table returning 1 of tbl_src190 in stage 1
+    Pl vector: [ tbl_src190 ]
+    - skipping tbl_action_compute_fingerprint as its already done
+tbl_action_check_membership_stage_one is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_one, stage=1)
+    - action dependency between tbl_action_check_membership_stage_three and table tbl_action_check_membership_stage_one due to PHV allocation advances stage to 2
+    Initial stage is 2, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+    Selected stage: 2    Furthest stage: 2
+    try_place_table returning 1 of tbl_action_check_membership_stage_one in stage 2
+    Pl vector: [ tbl_action_check_membership_stage_one ]
+tbl_action_check_membership_stage_two is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_two, stage=1)
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_two
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_two
+    Selected stage: 1    Furthest stage: 2
+    try_place_table returning 1 of tbl_action_check_membership_stage_two in stage 1
+    Pl vector: [ tbl_action_check_membership_stage_two ]
+    - skipping tbl_action_check_membership_stage_three as its already done
+  - skipping cond-6 due to in-sequence control dependence on tbl_action_check_membership_stage_one
+found 3 tables that could be placed: [ tbl_src190, tbl_action_check_membership_stage_one, tbl_action_check_membership_stage_two ]
+Initial best is first table seen: tbl_src190
+For trial t : tbl_action_check_membership_stage_one with best: tbl_src190
+    Keeping best tbl_src190 for reason: earlier stage calculated
+For trial t : tbl_action_check_membership_stage_two with best: tbl_src190
+    Updating best to tbl_action_check_membership_stage_two from tbl_src190 for reason: longer downward prop control-included dependence tail chain
+placing 1 entries of tbl_action_check_membership_stage_two in stage 1(11) FormatType(022)
+stage 1, work: [ 1829129, 1828731 ], partly placed 0, placed 6
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+tbl_src190 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_src190, stage=1)
+    Initial stage is 1, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+  picked layout for tbl_action_check_membership_stage_three FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_action_check_membership_stage_two FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  picked layout for tbl_src190 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_src190
+    Selected stage: 1    Furthest stage: 2
+    try_place_table returning 1 of tbl_src190 in stage 1
+    Pl vector: [ tbl_src190 ]
+    - skipping tbl_action_compute_fingerprint as its already done
+tbl_action_check_membership_stage_one is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_one, stage=1)
+    - action dependency between tbl_action_check_membership_stage_three and table tbl_action_check_membership_stage_one due to PHV allocation advances stage to 2
+    Initial stage is 2, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+    Selected stage: 2    Furthest stage: 2
+    try_place_table returning 1 of tbl_action_check_membership_stage_one in stage 2
+    Pl vector: [ tbl_action_check_membership_stage_one ]
+    - skipping tbl_action_check_membership_stage_two as its already done
+    - skipping tbl_action_check_membership_stage_three as its already done
+  - skipping cond-6 due to in-sequence control dependence on tbl_action_check_membership_stage_one
+found 2 tables that could be placed: [ tbl_src190, tbl_action_check_membership_stage_one ]
+Initial best is first table seen: tbl_src190
+For trial t : tbl_action_check_membership_stage_one with best: tbl_src190
+    Keeping best tbl_src190 for reason: earlier stage calculated
+placing 1 entries of tbl_src190 in stage 1(12) FormatType(02)
+stage 1, work: [ 1828731 ], partly placed 0, placed 7
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+    - skipping tbl_action_compute_fingerprint as its already done
+tbl_action_check_membership_stage_one is not a gateway! Aborting search for merge choices
+try_place_table(tbl_action_check_membership_stage_one, stage=1)
+    - action dependency between tbl_action_check_membership_stage_three and table tbl_action_check_membership_stage_one due to PHV allocation advances stage to 2
+    Initial stage is 2, initial entries is 1
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+  picked layout for tbl_action_check_membership_stage_one FormatType(022) layout: 0hV ixbar:0B/0b match:0B/0b ov:10
+    way:{ g:1 e:0 w:1 }
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_action_check_membership_stage_one
+    Selected stage: 2    Furthest stage: 2
+    try_place_table returning 1 of tbl_action_check_membership_stage_one in stage 2
+    Pl vector: [ tbl_action_check_membership_stage_one ]
+    - skipping tbl_action_check_membership_stage_two as its already done
+    - skipping tbl_action_check_membership_stage_three as its already done
+  - skipping cond-6 due to in-sequence control dependence on tbl_action_check_membership_stage_one
+found 1 tables that could be placed: [ tbl_action_check_membership_stage_one ]
+Initial best is first table seen: tbl_action_check_membership_stage_one
+placing 1 entries of tbl_action_check_membership_stage_one in stage 2(20) FormatType(022)
+stage 2, work: [ 1828731 ], partly placed 0, placed 8
+    { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 }
+    - skipping tbl_action_compute_fingerprint as its already done
+    - skipping tbl_action_check_membership_stage_one as its already done
+    - skipping tbl_action_check_membership_stage_two as its already done
+    - skipping tbl_action_check_membership_stage_three as its already done
+try_place_table(cond-6, stage=2)
+    Merging with match table tbl_drop and tag $false
+    - dependency between tbl_action_check_membership_stage_one and table advances stage
+    Initial stage is 3, initial entries is 1
+  picked layout for tbl_drop FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_drop
+  picked layout for tbl_drop FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+    entries:0 srams:0 maprams:0 tcams:0 afi:0
+  Trying to allocate imem for tbl_drop
+    Selected stage: 3    Furthest stage: 3
+    try_place_table returning 1 of tbl_drop in stage 3
+    Pl vector: [ tbl_drop ]
+found 1 tables that could be placed: [ tbl_drop ]
+Initial best is first table seen: tbl_drop
+placing 1 entries of tbl_drop (with gw cond-6, result tag $false) in stage 3(30) FormatType(02)
+Adding complete placement for resource mode:0
+Found a complete solution that fit the number of stages required
+Evaluating complete solution with resource:0
+Placement error(s):0 stages required:4
+Updating best final placement with this one
+Table placement placed 9 tables in 4 stages
+  Table tbl_drop logical id 0x30 entries=1
+  Gateway cond-6 is also logical id 0x30
+  Table tbl_action_check_membership_stage_one logical id 0x20 entries=1
+    attached table SwitchIngress.stage_one entries=1024
+  Table tbl_src190 logical id 0x12 entries=1
+  Table tbl_action_check_membership_stage_two logical id 0x11 entries=1
+    attached table SwitchIngress.stage_two entries=1024
+  Table tbl_action_check_membership_stage_three logical id 0x10 entries=1
+    attached table SwitchIngress.stage_three entries=1024
+  Table tbl_src185 logical id 0x3 entries=1
+  Table tbl_action_compute_fingerprint logical id 0x2 entries=1
+  Gateway cond-5 is also logical id 0x2
+  Table tbl_src188 logical id 0x1 entries=1
+  Gateway cond-4 is also logical id 0x1
+  Table bypass_egress_bypass_egress logical id 0x0 entries=512
+Finished table placement decisions pipe
+folding gateway cond-4 onto tbl_src188
+  Adding Ternary Indirect table to tbl_src188
+  Adding Ternary Indirect table to tbl_src185
+folding gateway cond-5 onto tbl_action_compute_fingerprint
+  Adding Ternary Indirect table to tbl_src190
+folding gateway cond-6 onto tbl_drop
+  Adding Ternary Indirect table to tbl_drop
+  Adding Ternary Indirect table to bypass_egress_bypass_egress
+table placement completed pipe
+ingress: [8] 0
+  0: bypass_egress_bypass_egress
+  1: tbl_src188(ingress::ig_intr_md.ingress_port == 0; => $true, 1)
+    $true: [13]
+      3: tbl_src185
+    $default: [9]
+      2: tbl_action_compute_fingerprint(ingress::hdr.ipv4.protocol == 1; => $true, 1)
+        $true: [12]
+          12: tbl_src190
+        $default: [10] 0 00 000
+          10: tbl_action_check_membership_stage_three{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_three 1024
+          11: tbl_action_check_membership_stage_two{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_two 1024
+          20: tbl_action_check_membership_stage_one{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_one 1024
+          30: tbl_drop(ingress::ig_md.stage_one_result; => $true, ingress::ig_md.stage_two_result; => $true, ingress::ig_md.stage_three_result; => $true, 1)
+            $true: [15]
+egress: [14]
+

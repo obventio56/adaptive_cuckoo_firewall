@@ -1,0 +1,10 @@
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/bf-p4c.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/driver.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/src.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/src-tofino.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/edit_cache.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/rebuild_cache.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/list_install_components.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/install.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/install/local.dir
+/home/alex/tofino_acf_firewall/tofino_poc/build/CMakeFiles/install/strip.dir

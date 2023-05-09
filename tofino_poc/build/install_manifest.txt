@@ -1,0 +1,7 @@
+/home/alex/bf-sde-9.9.0/install/share/p4/targets/tofino/src.conf
+/home/alex/bf-sde-9.9.0/install/share/tofinopd/src/events.json
+/home/alex/bf-sde-9.9.0/install/share/tofinopd/src/pipe/context.json
+/home/alex/bf-sde-9.9.0/install/share/tofinopd/src/pipe/tofino.bin
+/home/alex/bf-sde-9.9.0/install/share/tofinopd/src/frontend-ir.json
+/home/alex/bf-sde-9.9.0/install/share/tofinopd/src/source.json
+/home/alex/bf-sde-9.9.0/install/share/tofinopd/src/bf-rt.json

@@ -1,0 +1,36 @@
+digraph SwitchIngress {
+subgraph cluster {
+graph [
+label="", labeljust=r, style=bold];
+0[label=__START__, margin="", shape=rectangle, style=solid];
+1[label=__EXIT__, margin="", shape=rectangle, style=solid];
+2[label="ig_intr_md.ingress_port == 0;", margin="", shape=rectangle, style=solid];
+3[label=tbl_src185, margin="", shape=ellipse, style=solid];
+4[label=tbl_src188, margin="", shape=ellipse, style=solid];
+5[label="hdr.ipv4.protocol == 1;", margin="", shape=rectangle, style=solid];
+6[label=tbl_src190, margin="", shape=ellipse, style=solid];
+7[label=tbl_action_compute_fingerprint, margin="", shape=ellipse, style=solid];
+8[label=tbl_action_check_membership_stage_one, margin="", shape=ellipse, style=solid];
+9[label=tbl_action_check_membership_stage_two, margin="", shape=ellipse, style=solid];
+10[label=tbl_action_check_membership_stage_three, margin="", shape=ellipse, style=solid];
+11[label="ig_md.stage_one_result || ig_md.stage_two_result || ig_md.stage_three_result;", margin="", shape=rectangle, style=solid];
+12[label=tbl_drop, margin="", shape=ellipse, style=solid];
+13[label="SwitchIngress.bypass_egress.bypass_egress", margin="", shape=ellipse, style=solid];
+0 -> 2[label=""];
+2 -> 3[label=TRUE];
+2 -> 4[label=FALSE];
+3 -> 13[label=""];
+4 -> 5[label=""];
+5 -> 6[label=TRUE];
+5 -> 7[label=FALSE];
+6 -> 13[label=""];
+7 -> 8[label=""];
+8 -> 9[label=""];
+9 -> 10[label=""];
+10 -> 11[label=""];
+11 -> 12[label=FALSE];
+11 -> 13[label=TRUE];
+12 -> 13[label=""];
+13 -> 1[label=""];
+}
+}

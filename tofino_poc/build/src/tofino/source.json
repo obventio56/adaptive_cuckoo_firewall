@@ -1,0 +1,1124 @@
+{
+    "schema_version": "1.0.0",
+    "symbols": [
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 135,
+                    "column": 29
+                }
+            ],
+            "symbol_name": "SwitchIngress.fingerprint",
+            "declaration": {
+                "file": "src.p4",
+                "line": 131,
+                "column": 50
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 131,
+                    "column": 43
+                }
+            ],
+            "symbol_name": "SwitchIngress.poly1",
+            "declaration": {
+                "file": "src.p4",
+                "line": 130,
+                "column": 27
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 151,
+                    "column": 46
+                }
+            ],
+            "symbol_name": "SwitchIngress.stage_one",
+            "declaration": {
+                "file": "src.p4",
+                "line": 146,
+                "column": 48
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 172,
+                    "column": 34
+                }
+            ],
+            "symbol_name": "SwitchIngress.stage_one_lookup",
+            "declaration": {
+                "file": "src.p4",
+                "line": 151,
+                "column": 57
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 165,
+                    "column": 46
+                }
+            ],
+            "symbol_name": "SwitchIngress.stage_three",
+            "declaration": {
+                "file": "src.p4",
+                "line": 148,
+                "column": 48
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 180,
+                    "column": 36
+                }
+            ],
+            "symbol_name": "SwitchIngress.stage_three_lookup",
+            "declaration": {
+                "file": "src.p4",
+                "line": 165,
+                "column": 59
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 158,
+                    "column": 46
+                }
+            ],
+            "symbol_name": "SwitchIngress.stage_two",
+            "declaration": {
+                "file": "src.p4",
+                "line": 147,
+                "column": 48
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 176,
+                    "column": 34
+                }
+            ],
+            "symbol_name": "SwitchIngress.stage_two_lookup",
+            "declaration": {
+                "file": "src.p4",
+                "line": 158,
+                "column": 57
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 215,
+                    "column": 8
+                }
+            ],
+            "symbol_name": "pipe",
+            "declaration": {
+                "file": "src.p4",
+                "line": 213,
+                "column": 31
+            },
+            "symbol_type": "Declaration_Instance_Type_Specialized"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 193,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "SwitchIngress.action_check_membership_stage_one",
+            "declaration": {
+                "file": "src.p4",
+                "line": 171,
+                "column": 12
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 195,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "SwitchIngress.action_check_membership_stage_three",
+            "declaration": {
+                "file": "src.p4",
+                "line": 179,
+                "column": 12
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 194,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "SwitchIngress.action_check_membership_stage_two",
+            "declaration": {
+                "file": "src.p4",
+                "line": 175,
+                "column": 12
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 192,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "SwitchIngress.action_compute_fingerprint",
+            "declaration": {
+                "file": "src.p4",
+                "line": 134,
+                "column": 12
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "common/util.p4",
+                    "line": 63,
+                    "column": 13
+                },
+                {
+                    "file": "common/util.p4",
+                    "line": 65,
+                    "column": 32
+                }
+            ],
+            "symbol_name": "SwitchIngress.bypass_egress.set_bypass_egress",
+            "declaration": {
+                "file": "common/util.p4",
+                "line": 57,
+                "column": 12
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 199,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "SwitchIngress.drop",
+            "declaration": {
+                "file": "src.p4",
+                "line": 119,
+                "column": 12
+            },
+            "symbol_type": "P4Action"
+        },
+        {
+            "references": [
+                {
+                    "file": "common/util.p4",
+                    "line": 69,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "SwitchIngress.bypass_egress.bypass_egress",
+            "declaration": {
+                "file": "common/util.p4",
+                "line": 61,
+                "column": 11
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_action_check_membership_stage_one",
+            "declaration": {
+                "file": "src.p4",
+                "line": 193,
+                "column": 17
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_action_check_membership_stage_three",
+            "declaration": {
+                "file": "src.p4",
+                "line": 195,
+                "column": 17
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_action_check_membership_stage_two",
+            "declaration": {
+                "file": "src.p4",
+                "line": 194,
+                "column": 17
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_action_compute_fingerprint",
+            "declaration": {
+                "file": "src.p4",
+                "line": 192,
+                "column": 17
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_drop",
+            "declaration": {
+                "file": "src.p4",
+                "line": 199,
+                "column": 21
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_src185",
+            "declaration": {
+                "file": "src.p4",
+                "line": 185,
+                "column": 40
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_src188",
+            "declaration": {
+                "file": "src.p4",
+                "line": 188,
+                "column": 40
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [],
+            "symbol_name": "tbl_src190",
+            "declaration": {
+                "file": "src.p4",
+                "line": 190,
+                "column": 44
+            },
+            "symbol_type": "P4Table"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 137,
+                    "column": 13
+                }
+            ],
+            "symbol_name": "SwitchIngress.hdr.ipv4.dst_addr",
+            "declaration": {
+                "file": "src.p4",
+                "line": 110,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 140,
+                    "column": 13
+                },
+                {
+                    "file": "src.p4",
+                    "line": 189,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "SwitchIngress.hdr.ipv4.protocol",
+            "declaration": {
+                "file": "src.p4",
+                "line": 110,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 136,
+                    "column": 13
+                }
+            ],
+            "symbol_name": "SwitchIngress.hdr.ipv4.src_addr",
+            "declaration": {
+                "file": "src.p4",
+                "line": 110,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 139,
+                    "column": 13
+                }
+            ],
+            "symbol_name": "SwitchIngress.hdr.tcp.dst_port",
+            "declaration": {
+                "file": "src.p4",
+                "line": 110,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 138,
+                    "column": 13
+                }
+            ],
+            "symbol_name": "SwitchIngress.hdr.tcp.src_port",
+            "declaration": {
+                "file": "src.p4",
+                "line": 110,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 120,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "SwitchIngress.ig_dprsr_md.drop_ctl",
+            "declaration": {
+                "file": "src.p4",
+                "line": 114,
+                "column": 57
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 184,
+                    "column": 13
+                }
+            ],
+            "symbol_name": "SwitchIngress.ig_intr_md.ingress_port",
+            "declaration": {
+                "file": "src.p4",
+                "line": 112,
+                "column": 41
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 135,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 153,
+                    "column": 29
+                },
+                {
+                    "file": "src.p4",
+                    "line": 160,
+                    "column": 29
+                },
+                {
+                    "file": "src.p4",
+                    "line": 167,
+                    "column": 29
+                },
+                {
+                    "file": "src.p4",
+                    "line": 172,
+                    "column": 59
+                },
+                {
+                    "file": "src.p4",
+                    "line": 176,
+                    "column": 59
+                },
+                {
+                    "file": "src.p4",
+                    "line": 180,
+                    "column": 63
+                }
+            ],
+            "symbol_name": "SwitchIngress.ig_md.fingerprint",
+            "declaration": {
+                "file": "src.p4",
+                "line": 111,
+                "column": 26
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 172,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 197,
+                    "column": 38
+                }
+            ],
+            "symbol_name": "SwitchIngress.ig_md.stage_one_result",
+            "declaration": {
+                "file": "src.p4",
+                "line": 111,
+                "column": 26
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 180,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 197,
+                    "column": 90
+                }
+            ],
+            "symbol_name": "SwitchIngress.ig_md.stage_three_result",
+            "declaration": {
+                "file": "src.p4",
+                "line": 111,
+                "column": 26
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 176,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 197,
+                    "column": 64
+                }
+            ],
+            "symbol_name": "SwitchIngress.ig_md.stage_two_result",
+            "declaration": {
+                "file": "src.p4",
+                "line": 111,
+                "column": 26
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "common/util.p4",
+                    "line": 58,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 204,
+                    "column": 29
+                }
+            ],
+            "symbol_name": "SwitchIngress.ig_tm_md.bypass_egress",
+            "declaration": {
+                "file": "src.p4",
+                "line": 115,
+                "column": 51
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 185,
+                    "column": 13
+                },
+                {
+                    "file": "src.p4",
+                    "line": 188,
+                    "column": 13
+                },
+                {
+                    "file": "src.p4",
+                    "line": 190,
+                    "column": 17
+                }
+            ],
+            "symbol_name": "SwitchIngress.ig_tm_md.ucast_egress_port",
+            "declaration": {
+                "file": "src.p4",
+                "line": 115,
+                "column": 51
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 153,
+                    "column": 13
+                },
+                {
+                    "file": "src.p4",
+                    "line": 160,
+                    "column": 13
+                },
+                {
+                    "file": "src.p4",
+                    "line": 167,
+                    "column": 13
+                }
+            ],
+            "symbol_name": "SwitchIngress.rv",
+            "declaration": {
+                "file": "src.p4",
+                "line": 166,
+                "column": 50
+            },
+            "symbol_type": "Parameter_Type_Boolean"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 153,
+                    "column": 18
+                },
+                {
+                    "file": "src.p4",
+                    "line": 160,
+                    "column": 18
+                },
+                {
+                    "file": "src.p4",
+                    "line": 167,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "SwitchIngress.val.val",
+            "declaration": {
+                "file": "src.p4",
+                "line": 166,
+                "column": 36
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 105,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "SwitchIngressDeparser.hdr.ethernet",
+            "declaration": {
+                "file": "src.p4",
+                "line": 98,
+                "column": 46
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 105,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "SwitchIngressDeparser.hdr.icmp",
+            "declaration": {
+                "file": "src.p4",
+                "line": 98,
+                "column": 46
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 105,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "SwitchIngressDeparser.hdr.ipv4",
+            "declaration": {
+                "file": "src.p4",
+                "line": 98,
+                "column": 46
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 105,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "SwitchIngressDeparser.hdr.ipv6",
+            "declaration": {
+                "file": "src.p4",
+                "line": 98,
+                "column": 46
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 105,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "SwitchIngressDeparser.hdr.tcp",
+            "declaration": {
+                "file": "src.p4",
+                "line": 98,
+                "column": 46
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 105,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "SwitchIngressDeparser.hdr.udp",
+            "declaration": {
+                "file": "src.p4",
+                "line": 98,
+                "column": 46
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 105,
+                    "column": 18
+                }
+            ],
+            "symbol_name": "SwitchIngressDeparser.hdr.vlan_tag",
+            "declaration": {
+                "file": "src.p4",
+                "line": 98,
+                "column": 46
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 105,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "SwitchIngressDeparser.pkt",
+            "declaration": {
+                "file": "src.p4",
+                "line": 97,
+                "column": 42
+            },
+            "symbol_type": "Parameter_Type_Extern"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 67,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.hdr.ethernet",
+            "declaration": {
+                "file": "src.p4",
+                "line": 48,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 68,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.hdr.ethernet.ether_type",
+            "declaration": {
+                "file": "src.p4",
+                "line": 48,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 84,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.hdr.icmp",
+            "declaration": {
+                "file": "src.p4",
+                "line": 48,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 75,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.hdr.ipv4",
+            "declaration": {
+                "file": "src.p4",
+                "line": 48,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 76,
+                    "column": 27
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.hdr.ipv4.protocol",
+            "declaration": {
+                "file": "src.p4",
+                "line": 48,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 89,
+                    "column": 21
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.hdr.tcp",
+            "declaration": {
+                "file": "src.p4",
+                "line": 48,
+                "column": 22
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "common/util.p4",
+                    "line": 27,
+                    "column": 21
+                },
+                {
+                    "file": "src.p4",
+                    "line": 62,
+                    "column": 34
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.ig_intr_md",
+            "declaration": {
+                "file": "src.p4",
+                "line": 50,
+                "column": 42
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 62,
+                    "column": 34
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.ig_intr_md.$valid",
+            "declaration": {
+                "file": "src.p4",
+                "line": 50,
+                "column": 42
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "common/util.p4",
+                    "line": 28,
+                    "column": 27
+                },
+                {
+                    "file": "src.p4",
+                    "line": 62,
+                    "column": 34
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.ig_intr_md.resubmit_flag",
+            "declaration": {
+                "file": "src.p4",
+                "line": 50,
+                "column": 42
+            },
+            "symbol_type": "Parameter_Type_Header"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 57,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.ig_md.fingerprint",
+            "declaration": {
+                "file": "src.p4",
+                "line": 49,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 58,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.ig_md.stage_one_result",
+            "declaration": {
+                "file": "src.p4",
+                "line": 49,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 60,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.ig_md.stage_three_result",
+            "declaration": {
+                "file": "src.p4",
+                "line": 49,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "src.p4",
+                    "line": 59,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.ig_md.stage_two_result",
+            "declaration": {
+                "file": "src.p4",
+                "line": 49,
+                "column": 24
+            },
+            "symbol_type": "Parameter_Type_Struct"
+        },
+        {
+            "references": [
+                {
+                    "file": "common/util.p4",
+                    "line": 27,
+                    "column": 9
+                },
+                {
+                    "file": "common/util.p4",
+                    "line": 40,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 62,
+                    "column": 29
+                },
+                {
+                    "file": "src.p4",
+                    "line": 67,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 75,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 84,
+                    "column": 9
+                },
+                {
+                    "file": "src.p4",
+                    "line": 89,
+                    "column": 9
+                }
+            ],
+            "symbol_name": "SwitchIngressParser.pkt",
+            "declaration": {
+                "file": "src.p4",
+                "line": 47,
+                "column": 19
+            },
+            "symbol_type": "Parameter_Type_Extern"
+        },
+        {
+            "references": [],
+            "symbol_name": "cond-1",
+            "declaration": {
+                "file": "src.p4",
+                "line": 184,
+                "column": 9
+            },
+            "symbol_type": "IfStatement"
+        },
+        {
+            "references": [],
+            "symbol_name": "cond-2",
+            "declaration": {
+                "file": "src.p4",
+                "line": 189,
+                "column": 13
+            },
+            "symbol_type": "IfStatement"
+        },
+        {
+            "references": [],
+            "symbol_name": "cond-3",
+            "declaration": {
+                "file": "src.p4",
+                "line": 198,
+                "column": 17
+            },
+            "symbol_type": "IfStatement"
+        },
+        {
+            "references": [],
+            "symbol_name": "cond-4",
+            "declaration": {
+                "file": "src.p4",
+                "line": 184,
+                "column": 9
+            },
+            "symbol_type": "IfStatement"
+        },
+        {
+            "references": [],
+            "symbol_name": "cond-5",
+            "declaration": {
+                "file": "src.p4",
+                "line": 189,
+                "column": 13
+            },
+            "symbol_type": "IfStatement"
+        },
+        {
+            "references": [],
+            "symbol_name": "cond-6",
+            "declaration": {
+                "file": "src.p4",
+                "line": 198,
+                "column": 17
+            },
+            "symbol_type": "IfStatement"
+        }
+    ],
+    "source_root": "/home/alex/tofino_acf_firewall/tofino_poc/p4"
+}

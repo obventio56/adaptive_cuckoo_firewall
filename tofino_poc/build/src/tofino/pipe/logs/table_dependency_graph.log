@@ -1,0 +1,541 @@
+FindDependencyGraph : After Instruction Selection
+ingress: [8] 0
+  cond-4(ingress::ig_intr_md.ingress_port == 0; => $true, 1 => $false)
+    $true: [13]
+      tbl_src185
+    $false: [9] 0
+      tbl_src188
+      cond-5(ingress::hdr.ipv4.protocol == 1; => $true, 1 => $false)
+        $true: [12]
+          tbl_src190
+        $false: [10] 0 00 000 0000
+          tbl_action_compute_fingerprint
+          tbl_action_check_membership_stage_one
+            stateful SwitchIngress.stage_one 1024
+          tbl_action_check_membership_stage_two
+            stateful SwitchIngress.stage_two 1024
+          tbl_action_check_membership_stage_three
+            stateful SwitchIngress.stage_three 1024
+          cond-6(ingress::ig_md.stage_one_result; => $true, ingress::ig_md.stage_two_result; => $true, ingress::ig_md.stage_three_result; => $true, 1 => $false)
+            $false: [11]
+              tbl_drop
+  bypass_egress_bypass_egress
+egress: [14]
+
+DepStagesThruDomFrontier postorder : tbl_src185
+DepStagesThruDomFrontier postorder : tbl_src188
+DepStagesThruDomFrontier postorder : tbl_src190
+DepStagesThruDomFrontier postorder : tbl_action_compute_fingerprint
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_one
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_two
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_three
+DepStagesThruDomFrontier postorder : tbl_drop
+DepStagesThruDomFrontier postorder : cond-6
+DepStagesThruDomFrontier postorder : cond-5
+DepStagesThruDomFrontier postorder : cond-4
+DepStagesThruDomFrontier postorder : bypass_egress_bypass_egress
+    Maximum stage number according to dependences: 
+      INGRESS: 2
+      EGRESS: -1
+GRAPH
+    cond-4 -- CONTROL_COND_TRUE --> tbl_src185
+    cond-4 -- CONTROL_COND_FALSE --> tbl_src188
+    cond-4 -- CONTROL_COND_FALSE --> cond-5
+    cond-5 -- CONTROL_COND_TRUE --> tbl_src190
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_compute_fingerprint
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_one
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_two
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_three
+    cond-5 -- CONTROL_COND_FALSE --> cond-6
+    cond-6 -- CONTROL_COND_FALSE --> tbl_drop
+    tbl_src188 -- OUTPUT --> tbl_src190
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_three
+    tbl_action_check_membership_stage_one -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_two -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_three -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_one -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_action_check_membership_stage_two -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_action_check_membership_stage_three -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_src188 -- ANTI_NEXT_TABLE_DATA --> cond-5
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_three
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-4 2 2
+     tbl_src185 0 0
+	- Edge CONTROL_COND_TRUE cond-4
+     tbl_src188 2 2
+	- Edge CONTROL_COND_FALSE cond-4
+     cond-5 2 2
+	- Edge CONTROL_COND_FALSE cond-4
+	- Edge ANTI_NEXT_TABLE_DATA tbl_src188
+     tbl_action_compute_fingerprint 2 2
+	- Edge CONTROL_COND_FALSE cond-5
+     bypass_egress_bypass_egress 0 0
+ Stage #1
+     tbl_src190 0 0
+	- Edge OUTPUT tbl_src188
+     tbl_action_check_membership_stage_one 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_two 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_three 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+ Stage #2
+     cond-6 0 0
+	- Edge ACTION_READ tbl_action_check_membership_stage_one
+	- Edge ACTION_READ tbl_action_check_membership_stage_two
+	- Edge ACTION_READ tbl_action_check_membership_stage_three
+     tbl_drop 0 0
+	- Edge CONTROL_COND_FALSE cond-6
+
+FindDependencyGraph : Just Before PHV allocation
+ingress: [8] 0
+  cond-4(ingress::ig_intr_md.ingress_port == 0; => $true, 1 => $false)
+    $true: [13]
+      tbl_src185
+    $false: [9] 0
+      tbl_src188
+      cond-5(ingress::hdr.ipv4.protocol == 1; => $true, 1 => $false)
+        $true: [12]
+          tbl_src190
+        $false: [10] 0 00 000 0000
+          tbl_action_compute_fingerprint
+          tbl_action_check_membership_stage_one
+            stateful SwitchIngress.stage_one 1024
+          tbl_action_check_membership_stage_two
+            stateful SwitchIngress.stage_two 1024
+          tbl_action_check_membership_stage_three
+            stateful SwitchIngress.stage_three 1024
+          cond-6(ingress::ig_md.stage_one_result; => $true, ingress::ig_md.stage_two_result; => $true, ingress::ig_md.stage_three_result; => $true, 1 => $false)
+            $false: [11]
+              tbl_drop
+  bypass_egress_bypass_egress
+egress: [14]
+
+DepStagesThruDomFrontier postorder : tbl_src185
+DepStagesThruDomFrontier postorder : tbl_src188
+DepStagesThruDomFrontier postorder : tbl_src190
+DepStagesThruDomFrontier postorder : tbl_action_compute_fingerprint
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_one
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_two
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_three
+DepStagesThruDomFrontier postorder : tbl_drop
+DepStagesThruDomFrontier postorder : cond-6
+DepStagesThruDomFrontier postorder : cond-5
+DepStagesThruDomFrontier postorder : cond-4
+DepStagesThruDomFrontier postorder : bypass_egress_bypass_egress
+    Maximum stage number according to dependences: 
+      INGRESS: 2
+      EGRESS: -1
+GRAPH
+    cond-4 -- CONTROL_COND_TRUE --> tbl_src185
+    cond-4 -- CONTROL_COND_FALSE --> tbl_src188
+    cond-4 -- CONTROL_COND_FALSE --> cond-5
+    cond-5 -- CONTROL_COND_TRUE --> tbl_src190
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_compute_fingerprint
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_one
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_two
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_three
+    cond-5 -- CONTROL_COND_FALSE --> cond-6
+    cond-6 -- CONTROL_COND_FALSE --> tbl_drop
+    tbl_src188 -- OUTPUT --> tbl_src190
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_three
+    tbl_action_check_membership_stage_one -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_two -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_three -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_one -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_action_check_membership_stage_two -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_action_check_membership_stage_three -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_src188 -- ANTI_NEXT_TABLE_DATA --> cond-5
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_three
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-4 2 2
+     tbl_src185 0 0
+	- Edge CONTROL_COND_TRUE cond-4
+     tbl_src188 2 2
+	- Edge CONTROL_COND_FALSE cond-4
+     cond-5 2 2
+	- Edge CONTROL_COND_FALSE cond-4
+	- Edge ANTI_NEXT_TABLE_DATA tbl_src188
+     tbl_action_compute_fingerprint 2 2
+	- Edge CONTROL_COND_FALSE cond-5
+     bypass_egress_bypass_egress 0 0
+ Stage #1
+     tbl_src190 0 0
+	- Edge OUTPUT tbl_src188
+     tbl_action_check_membership_stage_one 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_two 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_three 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+ Stage #2
+     cond-6 0 0
+	- Edge ACTION_READ tbl_action_check_membership_stage_one
+	- Edge ACTION_READ tbl_action_check_membership_stage_two
+	- Edge ACTION_READ tbl_action_check_membership_stage_three
+     tbl_drop 0 0
+	- Edge CONTROL_COND_FALSE cond-6
+
+ingress: [8] 0
+  cond-4(ingress::ig_intr_md.ingress_port == 0; => $true, 1 => $false)
+    $true: [13]
+      tbl_src185
+    $false: [9] 1
+      tbl_src188
+      cond-5(ingress::hdr.ipv4.protocol == 1; => $true, 1 => $false)
+        $true: [12]
+          tbl_src190
+        $false: [10] 1 10 100 1111
+          tbl_action_compute_fingerprint
+          tbl_action_check_membership_stage_one
+            stateful SwitchIngress.stage_one 1024
+          tbl_action_check_membership_stage_two
+            stateful SwitchIngress.stage_two 1024
+          tbl_action_check_membership_stage_three
+            stateful SwitchIngress.stage_three 1024
+          cond-6(ingress::ig_md.stage_one_result; => $true, ingress::ig_md.stage_two_result; => $true, ingress::ig_md.stage_three_result; => $true, 1 => $false)
+            $false: [11]
+              tbl_drop
+  bypass_egress_bypass_egress
+egress: [14]
+
+DepStagesThruDomFrontier postorder : tbl_src185
+DepStagesThruDomFrontier postorder : tbl_src188
+DepStagesThruDomFrontier postorder : tbl_src190
+DepStagesThruDomFrontier postorder : tbl_action_compute_fingerprint
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_one
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_two
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_three
+DepStagesThruDomFrontier postorder : tbl_drop
+DepStagesThruDomFrontier postorder : cond-6
+DepStagesThruDomFrontier postorder : cond-5
+DepStagesThruDomFrontier postorder : cond-4
+DepStagesThruDomFrontier postorder : bypass_egress_bypass_egress
+    Maximum stage number according to dependences: 
+      INGRESS: 2
+      EGRESS: -1
+GRAPH
+    cond-4 -- CONTROL_COND_TRUE --> tbl_src185
+    cond-4 -- CONTROL_COND_FALSE --> tbl_src188
+    cond-4 -- CONTROL_COND_FALSE --> cond-5
+    cond-5 -- CONTROL_COND_TRUE --> tbl_src190
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_compute_fingerprint
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_one
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_two
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_three
+    cond-5 -- CONTROL_COND_FALSE --> cond-6
+    cond-6 -- CONTROL_COND_FALSE --> tbl_drop
+    tbl_src188 -- OUTPUT --> tbl_src190
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_three
+    tbl_action_check_membership_stage_one -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_two -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_three -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_one -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_action_check_membership_stage_two -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_action_check_membership_stage_three -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_src188 -- ANTI_NEXT_TABLE_DATA --> cond-5
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_three
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-4 2 2
+     tbl_src185 0 0
+	- Edge CONTROL_COND_TRUE cond-4
+     tbl_src188 2 2
+	- Edge CONTROL_COND_FALSE cond-4
+     cond-5 2 2
+	- Edge CONTROL_COND_FALSE cond-4
+	- Edge ANTI_NEXT_TABLE_DATA tbl_src188
+     tbl_action_compute_fingerprint 2 2
+	- Edge CONTROL_COND_FALSE cond-5
+     bypass_egress_bypass_egress 0 0
+ Stage #1
+     tbl_src190 0 0
+	- Edge OUTPUT tbl_src188
+     tbl_action_check_membership_stage_one 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_two 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_three 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+ Stage #2
+     cond-6 0 0
+	- Edge ACTION_READ tbl_action_check_membership_stage_one
+	- Edge ACTION_READ tbl_action_check_membership_stage_two
+	- Edge ACTION_READ tbl_action_check_membership_stage_three
+     tbl_drop 0 0
+	- Edge CONTROL_COND_FALSE cond-6
+
+FindDependencyGraph : Before Table Placement
+ingress: [8] 0
+  cond-4(ingress::ig_intr_md.ingress_port == 0; => $true, 1 => $false)
+    $true: [13]
+      tbl_src185
+    $false: [9] 1
+      tbl_src188
+      cond-5(ingress::hdr.ipv4.protocol == 1; => $true, 1 => $false)
+        $true: [12]
+          tbl_src190
+        $false: [10] 1 10 100 1111
+          tbl_action_compute_fingerprint
+          tbl_action_check_membership_stage_one
+            stateful SwitchIngress.stage_one 1024
+          tbl_action_check_membership_stage_two
+            stateful SwitchIngress.stage_two 1024
+          tbl_action_check_membership_stage_three
+            stateful SwitchIngress.stage_three 1024
+          cond-6(ingress::ig_md.stage_one_result; => $true, ingress::ig_md.stage_two_result; => $true, ingress::ig_md.stage_three_result; => $true, 1 => $false)
+            $false: [11]
+              tbl_drop
+  bypass_egress_bypass_egress
+egress: [14]
+
+DepStagesThruDomFrontier postorder : tbl_src185
+DepStagesThruDomFrontier postorder : tbl_src188
+DepStagesThruDomFrontier postorder : tbl_src190
+DepStagesThruDomFrontier postorder : tbl_action_compute_fingerprint
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_one
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_two
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_three
+DepStagesThruDomFrontier postorder : tbl_drop
+DepStagesThruDomFrontier postorder : cond-6
+DepStagesThruDomFrontier postorder : cond-5
+DepStagesThruDomFrontier postorder : cond-4
+DepStagesThruDomFrontier postorder : bypass_egress_bypass_egress
+    Maximum stage number according to dependences: 
+      INGRESS: 2
+      EGRESS: -1
+GRAPH
+    cond-4 -- CONTROL_COND_TRUE --> tbl_src185
+    cond-4 -- CONTROL_COND_FALSE --> tbl_src188
+    cond-4 -- CONTROL_COND_FALSE --> cond-5
+    cond-5 -- CONTROL_COND_TRUE --> tbl_src190
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_compute_fingerprint
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_one
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_two
+    cond-5 -- CONTROL_COND_FALSE --> tbl_action_check_membership_stage_three
+    cond-5 -- CONTROL_COND_FALSE --> cond-6
+    cond-6 -- CONTROL_COND_FALSE --> tbl_drop
+    tbl_src188 -- OUTPUT --> tbl_src190
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_three
+    tbl_action_check_membership_stage_one -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_two -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_three -- ACTION_READ --> cond-6
+    tbl_action_check_membership_stage_one -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_action_check_membership_stage_two -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_action_check_membership_stage_three -- ANTI_NEXT_TABLE_DATA --> cond-6
+    tbl_src188 -- ANTI_NEXT_TABLE_DATA --> cond-5
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- ANTI_NEXT_TABLE_DATA --> tbl_action_check_membership_stage_three
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     cond-4 2 2
+     tbl_src185 0 0
+	- Edge CONTROL_COND_TRUE cond-4
+     tbl_src188 2 2
+	- Edge CONTROL_COND_FALSE cond-4
+     cond-5 2 2
+	- Edge CONTROL_COND_FALSE cond-4
+	- Edge ANTI_NEXT_TABLE_DATA tbl_src188
+     tbl_action_compute_fingerprint 2 2
+	- Edge CONTROL_COND_FALSE cond-5
+     bypass_egress_bypass_egress 0 0
+ Stage #1
+     tbl_src190 0 0
+	- Edge OUTPUT tbl_src188
+     tbl_action_check_membership_stage_one 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_two 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_three 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+ Stage #2
+     cond-6 0 0
+	- Edge ACTION_READ tbl_action_check_membership_stage_one
+	- Edge ACTION_READ tbl_action_check_membership_stage_two
+	- Edge ACTION_READ tbl_action_check_membership_stage_three
+     tbl_drop 0 0
+	- Edge CONTROL_COND_FALSE cond-6
+
+FindDependencyGraph : After Table Placement
+ingress: [8] 0
+  0: bypass_egress_bypass_egress
+  1: tbl_src188(ingress::ig_intr_md.ingress_port == 0; => $true, 1)
+    $true: [13]
+      3: tbl_src185
+    $default: [9]
+      2: tbl_action_compute_fingerprint(ingress::hdr.ipv4.protocol == 1; => $true, 1)
+        $true: [12]
+          12: tbl_src190
+        $default: [10] 0 00 111
+          10: tbl_action_check_membership_stage_three{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_three 1024
+          11: tbl_action_check_membership_stage_two{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_two 1024
+          20: tbl_action_check_membership_stage_one{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_one 1024
+          30: tbl_drop(ingress::ig_md.stage_one_result; => $true, ingress::ig_md.stage_two_result; => $true, ingress::ig_md.stage_three_result; => $true, 1)
+            $true: [15]
+egress: [14]
+
+DepStagesThruDomFrontier postorder : bypass_egress_bypass_egress
+DepStagesThruDomFrontier postorder : tbl_src185
+DepStagesThruDomFrontier postorder : tbl_src190
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_three
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_two
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_one
+DepStagesThruDomFrontier postorder : tbl_drop
+DepStagesThruDomFrontier postorder : tbl_action_compute_fingerprint
+DepStagesThruDomFrontier postorder : tbl_src188
+    Maximum stage number according to dependences: 
+      INGRESS: 2
+      EGRESS: -1
+GRAPH
+    tbl_src188 -- CONTROL_COND_TRUE --> tbl_src185
+    tbl_src188 -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_action_compute_fingerprint
+    tbl_action_compute_fingerprint -- CONTROL_COND_TRUE --> tbl_src190
+    tbl_action_compute_fingerprint -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_action_check_membership_stage_three
+    tbl_action_compute_fingerprint -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_drop
+    tbl_src188 -- OUTPUT --> tbl_src190
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_three
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_one
+    tbl_action_check_membership_stage_one -- ACTION_READ --> tbl_drop
+    tbl_action_check_membership_stage_two -- ACTION_READ --> tbl_drop
+    tbl_action_check_membership_stage_three -- ACTION_READ --> tbl_drop
+    tbl_action_check_membership_stage_three -- ANTI_NEXT_TABLE_DATA --> tbl_drop
+    tbl_action_check_membership_stage_two -- ANTI_NEXT_TABLE_DATA --> tbl_drop
+    tbl_action_check_membership_stage_one -- ANTI_NEXT_TABLE_DATA --> tbl_drop
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     tbl_src188 2 2
+     tbl_src185 0 0
+	- Edge CONTROL_COND_TRUE tbl_src188
+     tbl_action_compute_fingerprint 2 2
+	- Edge CONTROL_DEFAULT_NEXT_TABLE tbl_src188
+     bypass_egress_bypass_egress 0 0
+ Stage #1
+     tbl_src190 0 0
+	- Edge OUTPUT tbl_src188
+     tbl_action_check_membership_stage_three 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_two 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_one 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+ Stage #2
+     tbl_drop 0 0
+	- Edge ACTION_READ tbl_action_check_membership_stage_one
+	- Edge ACTION_READ tbl_action_check_membership_stage_two
+	- Edge ACTION_READ tbl_action_check_membership_stage_three
+
+FindDependencyGraph : Power Calculation
+ingress: [8] 0
+  0: bypass_egress_bypass_egress
+  1: tbl_src188(ingress::ig_intr_md.ingress_port == 0; => $true, 1)
+    $true: [13]
+      3: tbl_src185
+    $default: [9]
+      2: tbl_action_compute_fingerprint(ingress::hdr.ipv4.protocol == 1; => $true, 1)
+        $true: [12]
+          12: tbl_src190
+        $default: [10] 0 00 111
+          10: tbl_action_check_membership_stage_three{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_three 1024
+          11: tbl_action_check_membership_stage_two{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_two 1024
+          20: tbl_action_check_membership_stage_one{ E 0+10, 0 0K }
+            stateful SwitchIngress.stage_one 1024
+          30: tbl_drop(ingress::ig_md.stage_one_result; => $true, ingress::ig_md.stage_two_result; => $true, ingress::ig_md.stage_three_result; => $true, 1)
+            $true: [15]
+egress: [14]
+
+DepStagesThruDomFrontier postorder : bypass_egress_bypass_egress
+DepStagesThruDomFrontier postorder : tbl_src185
+DepStagesThruDomFrontier postorder : tbl_src190
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_three
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_two
+DepStagesThruDomFrontier postorder : tbl_action_check_membership_stage_one
+DepStagesThruDomFrontier postorder : tbl_drop
+DepStagesThruDomFrontier postorder : tbl_action_compute_fingerprint
+DepStagesThruDomFrontier postorder : tbl_src188
+    Maximum stage number according to dependences: 
+      INGRESS: 2
+      EGRESS: -1
+GRAPH
+    tbl_src188 -- CONTROL_COND_TRUE --> tbl_src185
+    tbl_src188 -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_action_compute_fingerprint
+    tbl_action_compute_fingerprint -- CONTROL_COND_TRUE --> tbl_src190
+    tbl_action_compute_fingerprint -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_action_check_membership_stage_three
+    tbl_action_compute_fingerprint -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_action_check_membership_stage_one
+    tbl_action_compute_fingerprint -- CONTROL_DEFAULT_NEXT_TABLE --> tbl_drop
+    tbl_src188 -- OUTPUT --> tbl_src190
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_three
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_two
+    tbl_action_compute_fingerprint -- IXBAR_READ --> tbl_action_check_membership_stage_one
+    tbl_action_check_membership_stage_one -- ACTION_READ --> tbl_drop
+    tbl_action_check_membership_stage_two -- ACTION_READ --> tbl_drop
+    tbl_action_check_membership_stage_three -- ACTION_READ --> tbl_drop
+    tbl_action_check_membership_stage_three -- ANTI_NEXT_TABLE_DATA --> tbl_drop
+    tbl_action_check_membership_stage_two -- ANTI_NEXT_TABLE_DATA --> tbl_drop
+    tbl_action_check_membership_stage_one -- ANTI_NEXT_TABLE_DATA --> tbl_drop
+MIN STAGE INFO
+    Each table also indicates its dependency chain length
+    First number refers to a dependency chain from which each tables are not split
+    Second number refers to a dependency chain from which each tables are split as on  last allocation pass
+ Stage #0
+     tbl_src188 2 2
+     tbl_src185 0 0
+	- Edge CONTROL_COND_TRUE tbl_src188
+     tbl_action_compute_fingerprint 2 2
+	- Edge CONTROL_DEFAULT_NEXT_TABLE tbl_src188
+     bypass_egress_bypass_egress 0 0
+ Stage #1
+     tbl_src190 0 0
+	- Edge OUTPUT tbl_src188
+     tbl_action_check_membership_stage_three 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_two 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+     tbl_action_check_membership_stage_one 1 1
+	- Edge IXBAR_READ tbl_action_compute_fingerprint
+ Stage #2
+     tbl_drop 0 0
+	- Edge ACTION_READ tbl_action_check_membership_stage_one
+	- Edge ACTION_READ tbl_action_check_membership_stage_two
+	- Edge ACTION_READ tbl_action_check_membership_stage_three
+

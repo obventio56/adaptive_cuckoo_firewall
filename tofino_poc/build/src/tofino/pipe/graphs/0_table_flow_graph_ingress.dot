@@ -1,0 +1,67 @@
+digraph ingress {
+cond_4 [ shape=record, style="filled", fillcolor=cornsilk, label="ig_intr_md.ingress_port == 0\l\l
+ "];
+tbl_src185 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_src185\l\l
+W:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+tbl_src188 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_src188\l\l
+W:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+bypass_egress_bypass_egress [ shape=record, style="filled", fillcolor=cornsilk, label="bypass_egress_bypass_egress\l\l
+W:\l
+ ig_intr_md_for_tm.bypass_egress\l
+ "];
+cond_5 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.ipv4.protocol == 1\l\l
+ "];
+tbl_src190 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_src190\l\l
+W:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+tbl_action_compute_fingerprint [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_action_compute_fingerprint\l\l
+W:\l
+ ig_md.fingerprint\l
+ "];
+tbl_action_check_membership_stage_one [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_action_check_membership_stage_one\l\l
+R:\l
+ ig_md.fingerprint\l
+\lW:\l
+ ig_md.stage_one_result\l
+ "];
+tbl_action_check_membership_stage_two [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_action_check_membership_stage_two\l\l
+R:\l
+ ig_md.fingerprint\l
+\lW:\l
+ ig_md.stage_two_result\l
+ "];
+tbl_action_check_membership_stage_three [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_action_check_membership_stage_three\l\l
+R:\l
+ ig_md.fingerprint\l
+\lW:\l
+ ig_md.stage_three_result\l
+ "];
+cond_6 [ shape=record, style="filled", fillcolor=cornsilk, label="ig_md.stage_one_result || ig_md.stage_two_result || ig_md.stage_three_result\l\l
+ "];
+tbl_drop [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_drop\l\l
+W:\l
+ ig_intr_md_for_dprsr.drop_ctl\l
+ "];
+    PARSER -> cond_4
+    cond_4 -> tbl_src185
+    PARSER -> cond_4
+    cond_4 -> tbl_src188
+    tbl_src185 -> bypass_egress_bypass_egress
+    tbl_src188 -> cond_5
+    cond_5 -> tbl_src190
+    cond_5 -> tbl_action_compute_fingerprint
+    tbl_src190 -> bypass_egress_bypass_egress
+    tbl_action_compute_fingerprint -> tbl_action_check_membership_stage_one
+    tbl_action_check_membership_stage_one -> tbl_action_check_membership_stage_two
+    tbl_action_check_membership_stage_two -> tbl_action_check_membership_stage_three
+    tbl_action_check_membership_stage_three -> cond_6
+    cond_6 -> tbl_drop
+    cond_6 -> bypass_egress_bypass_egress
+    tbl_drop -> bypass_egress_bypass_egress
+    bypass_egress_bypass_egress -> DEPARSER
+}

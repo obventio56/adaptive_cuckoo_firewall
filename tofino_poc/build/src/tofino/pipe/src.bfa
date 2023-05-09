@@ -1,0 +1,635 @@
+version:
+  version: 1.0.1
+  run_id: "694fce3f4c66e5ec"
+  target: Tofino
+phv ingress:
+  ig_intr_md.ingress_port: {  stage 0: H1(0..8) } 
+  hdr.ethernet.dst_addr.0-15: TH3
+  hdr.ethernet.dst_addr.16-31: TH4
+  hdr.ethernet.dst_addr.32-47: TH8
+  hdr.ethernet.src_addr.0-15: TH1
+  hdr.ethernet.src_addr.16-31: TH2
+  hdr.ethernet.src_addr.32-47: TH7
+  hdr.ethernet.ether_type: TH6
+  hdr.ipv4.version: TW0(28..31)
+  hdr.ipv4.ihl: TW0(24..27)
+  hdr.ipv4.diffserv: TW0(16..23)
+  hdr.ipv4.total_len: TW0(0..15)
+  hdr.ipv4.identification: TW2(16..31)
+  hdr.ipv4.flags: TW2(13..15)
+  hdr.ipv4.frag_offset: TW2(0..12)
+  hdr.ipv4.ttl: TB0
+  hdr.ipv4.protocol: B1
+  hdr.ipv4.hdr_checksum: TH0
+  hdr.ipv4.src_addr: W2
+  hdr.ipv4.dst_addr: W1
+  hdr.icmp.type_: TW1(24..31)
+  hdr.icmp.code: TW1(16..23)
+  hdr.icmp.hdr_checksum: TW1(0..15)
+  hdr.tcp.src_port: W0(16..31)
+  hdr.tcp.dst_port: W0(0..15)
+  hdr.tcp.seq_no: TW4
+  hdr.tcp.ack_no.0-15: TH5
+  hdr.tcp.ack_no.16-23: TB1
+  hdr.tcp.ack_no.24-31: TB2
+  hdr.tcp.data_offset: TW1(28..31)
+  hdr.tcp.res: TW1(24..27)
+  hdr.tcp.flags: TW1(16..23)
+  hdr.tcp.window: TW1(0..15)
+  hdr.tcp.checksum: TW3(16..31)
+  hdr.tcp.urgent_ptr: TW3(0..15)
+  ig_intr_md_for_tm.ucast_egress_port: {  stage 1..12: H0(0..8) } 
+  ig_intr_md_for_tm.bypass_egress: {  stage 1..12: B0(3) } 
+  ig_md.fingerprint: {  stage 1..2: W3 } 
+  ig_md.stage_one_result: {  stage 3: B0(4) } 
+  ig_md.stage_two_result: {  stage 2..3: B2(4) } 
+  ig_md.stage_three_result: {  stage 2..3: B0(5) } 
+  ig_intr_md_for_dprsr.drop_ctl: {  stage 4..12: B0(0..2) } 
+  hdr.ethernet.$valid: B2(0)
+  hdr.ipv4.$valid: B2(1)
+  hdr.icmp.$valid: B2(2)
+  hdr.tcp.$valid: B2(3)
+  context_json:
+    B0:
+    - { name : ig_intr_md_for_tm.bypass_egress, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : ig_md.stage_one_result, live_start : 3, live_end : 3, mutually_exclusive_with: [  ] }
+    - { name : ig_md.stage_three_result, live_start : 2, live_end : 3, mutually_exclusive_with: [  ] }
+    - { name : ig_intr_md_for_dprsr.drop_ctl, live_start : 4, live_end : deparser, mutually_exclusive_with: [  ] }
+    B1:
+    - { name : hdr.ipv4.protocol, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    B2:
+    - { name : ig_md.stage_two_result, live_start : 2, live_end : 3, mutually_exclusive_with: [  ] }
+    - { name : hdr.ethernet.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.ipv4.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.icmp.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.tcp.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H0:
+    - { name : ig_intr_md_for_tm.ucast_egress_port, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
+    H1:
+    - { name : ig_intr_md.ingress_port, live_start : parser, live_end : 0, mutually_exclusive_with: [  ] }
+    W0:
+    - { name : hdr.tcp.src_port, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.tcp.dst_port, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    W1:
+    - { name : hdr.ipv4.dst_addr, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    W2:
+    - { name : hdr.ipv4.src_addr, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    W3:
+    - { name : ig_md.fingerprint, live_start : 1, live_end : 2, mutually_exclusive_with: [  ] }
+phv egress:
+  context_json:
+parser ingress:
+  start: $entry_point
+  init_zero: [ B0, W3, B2 ]
+  bitwise_or: [ B2 ]
+  hdr_len_adj: 16
+  states:
+    $entry_point:
+      *:
+        load: { byte1 : 0 }
+        buf_req: 1
+        next: start
+    start:
+      match: [ byte1 ]
+      0b1*******:
+        0..1: H1  # bit[7..15] -> H1 bit[8..0]: ingress::ig_intr_md.ingress_port
+        shift: 8
+        buf_req: 8
+        next: end
+      0b0*******:
+        0..1: H1  # bit[7..15] -> H1 bit[8..0]: ingress::ig_intr_md.ingress_port
+        shift: 8
+        buf_req: 8
+        next: TofinoIngressParser_parse_port_metadata
+    TofinoIngressParser_parse_port_metadata:
+      *:
+        8..9: TH8  # ingress::hdr.ethernet.dst_addr[47:32].32-47
+        10..11: TH4  # ingress::hdr.ethernet.dst_addr[31:16].16-31
+        12..13: TH3  # ingress::hdr.ethernet.dst_addr[15:0].0-15
+        14..15: TH7  # ingress::hdr.ethernet.src_addr[47:32].32-47
+        B2: 1  # value 1 -> B2 bit[0]: ingress::hdr.ethernet.$valid
+        load: { half : 20..21 }
+        shift: 16
+        buf_req: 22
+        next: TofinoIngressParser_parse_port_metadata.$split_0
+    TofinoIngressParser_parse_port_metadata.$split_0:
+      match: [ half ]
+      0x0800:
+        0..1: TH2  # ingress::hdr.ethernet.src_addr[31:16].16-31
+        2..3: TH1  # ingress::hdr.ethernet.src_addr[15:0].0-15
+        4..5: TH6  # ingress::hdr.ethernet.ether_type
+        load: { byte1 : 15 }
+        shift: 6
+        buf_req: 16
+        next: parse_ipv4
+      0x****:
+        0..1: TH2  # ingress::hdr.ethernet.src_addr[31:16].16-31
+        2..3: TH1  # ingress::hdr.ethernet.src_addr[15:0].0-15
+        4..5: TH6  # ingress::hdr.ethernet.ether_type
+        shift: 6
+        buf_req: 6
+        next: end
+    parse_ipv4:
+      match: [ byte1 ]
+      0x01:
+        0..3: TW0
+            # - bit[0..3] -> TW0 bit[31..28]: ingress::hdr.ipv4.version
+            # - bit[4..7] -> TW0 bit[27..24]: ingress::hdr.ipv4.ihl
+            # - bit[8..15] -> TW0 bit[23..16]: ingress::hdr.ipv4.diffserv
+            # - bit[16..31] -> TW0 bit[15..0]: ingress::hdr.ipv4.total_len
+        4..7: TW2
+            # - bit[32..47] -> TW2 bit[31..16]: ingress::hdr.ipv4.identification
+            # - bit[48..50] -> TW2 bit[15..13]: ingress::hdr.ipv4.flags
+            # - bit[51..63] -> TW2 bit[12..0]: ingress::hdr.ipv4.frag_offset
+        8: TB0  # ingress::hdr.ipv4.ttl
+        9: B1  # ingress::hdr.ipv4.protocol
+        10..11: TH0  # ingress::hdr.ipv4.hdr_checksum
+        12..15: W2  # ingress::hdr.ipv4.src_addr
+        16..19: W1  # ingress::hdr.ipv4.dst_addr
+        B2: 2  # value 1 -> B2 bit[1]: ingress::hdr.ipv4.$valid
+        shift: 20
+        buf_req: 20
+        next: parse_icmp
+      0x06:
+        0..3: TW0
+            # - bit[0..3] -> TW0 bit[31..28]: ingress::hdr.ipv4.version
+            # - bit[4..7] -> TW0 bit[27..24]: ingress::hdr.ipv4.ihl
+            # - bit[8..15] -> TW0 bit[23..16]: ingress::hdr.ipv4.diffserv
+            # - bit[16..31] -> TW0 bit[15..0]: ingress::hdr.ipv4.total_len
+        4..7: TW2
+            # - bit[32..47] -> TW2 bit[31..16]: ingress::hdr.ipv4.identification
+            # - bit[48..50] -> TW2 bit[15..13]: ingress::hdr.ipv4.flags
+            # - bit[51..63] -> TW2 bit[12..0]: ingress::hdr.ipv4.frag_offset
+        8: TB0  # ingress::hdr.ipv4.ttl
+        9: B1  # ingress::hdr.ipv4.protocol
+        10..11: TH0  # ingress::hdr.ipv4.hdr_checksum
+        12..15: W2  # ingress::hdr.ipv4.src_addr
+        16..19: W1  # ingress::hdr.ipv4.dst_addr
+        B2: 2  # value 1 -> B2 bit[1]: ingress::hdr.ipv4.$valid
+        shift: 20
+        buf_req: 20
+        next: parse_tcp
+      0x**:
+        0..3: TW0
+            # - bit[0..3] -> TW0 bit[31..28]: ingress::hdr.ipv4.version
+            # - bit[4..7] -> TW0 bit[27..24]: ingress::hdr.ipv4.ihl
+            # - bit[8..15] -> TW0 bit[23..16]: ingress::hdr.ipv4.diffserv
+            # - bit[16..31] -> TW0 bit[15..0]: ingress::hdr.ipv4.total_len
+        4..7: TW2
+            # - bit[32..47] -> TW2 bit[31..16]: ingress::hdr.ipv4.identification
+            # - bit[48..50] -> TW2 bit[15..13]: ingress::hdr.ipv4.flags
+            # - bit[51..63] -> TW2 bit[12..0]: ingress::hdr.ipv4.frag_offset
+        8: TB0  # ingress::hdr.ipv4.ttl
+        9: B1  # ingress::hdr.ipv4.protocol
+        10..11: TH0  # ingress::hdr.ipv4.hdr_checksum
+        12..15: W2  # ingress::hdr.ipv4.src_addr
+        16..19: W1  # ingress::hdr.ipv4.dst_addr
+        B2: 2  # value 1 -> B2 bit[1]: ingress::hdr.ipv4.$valid
+        shift: 20
+        buf_req: 20
+        next: end
+    parse_icmp:
+      *:
+        0..3: TW1
+            # - bit[0..7] -> TW1 bit[31..24]: ingress::hdr.icmp.type_
+            # - bit[8..15] -> TW1 bit[23..16]: ingress::hdr.icmp.code
+            # - bit[16..31] -> TW1 bit[15..0]: ingress::hdr.icmp.hdr_checksum
+        B2: 4  # value 1 -> B2 bit[2]: ingress::hdr.icmp.$valid
+        shift: 4
+        buf_req: 4
+        next: end
+    parse_tcp:
+      *:
+        0..3: W0
+            # - bit[0..15] -> W0 bit[31..16]: ingress::hdr.tcp.src_port
+            # - bit[16..31] -> W0 bit[15..0]: ingress::hdr.tcp.dst_port
+        4..7: TW4  # ingress::hdr.tcp.seq_no
+        8: TB2  # ingress::hdr.tcp.ack_no[31:24].24-31
+        9: TB1  # ingress::hdr.tcp.ack_no[23:16].16-23
+        10..11: TH5  # ingress::hdr.tcp.ack_no[15:0].0-15
+        12..15: TW1
+            # - bit[96..99] -> TW1 bit[31..28]: ingress::hdr.tcp.data_offset
+            # - bit[100..103] -> TW1 bit[27..24]: ingress::hdr.tcp.res
+            # - bit[104..111] -> TW1 bit[23..16]: ingress::hdr.tcp.flags
+            # - bit[112..127] -> TW1 bit[15..0]: ingress::hdr.tcp.window
+        16..19: TW3
+            # - bit[128..143] -> TW3 bit[31..16]: ingress::hdr.tcp.checksum
+            # - bit[144..159] -> TW3 bit[15..0]: ingress::hdr.tcp.urgent_ptr
+        B2: 8  # value 1 -> B2 bit[3]: ingress::hdr.tcp.$valid
+        shift: 20
+        buf_req: 20
+        next: end
+deparser ingress:
+  dictionary:
+    TH8: B2(0)  # ingress::hdr.ethernet.dst_addr.32-47 if ingress::hdr.ethernet.$valid
+    TH4: B2(0)  # ingress::hdr.ethernet.dst_addr.16-31 if ingress::hdr.ethernet.$valid
+    TH3: B2(0)  # ingress::hdr.ethernet.dst_addr.0-15 if ingress::hdr.ethernet.$valid
+    TH7: B2(0)  # ingress::hdr.ethernet.src_addr.32-47 if ingress::hdr.ethernet.$valid
+    TH2: B2(0)  # ingress::hdr.ethernet.src_addr.16-31 if ingress::hdr.ethernet.$valid
+    TH1: B2(0)  # ingress::hdr.ethernet.src_addr.0-15 if ingress::hdr.ethernet.$valid
+    TH6: B2(0)  # ingress::hdr.ethernet.ether_type if ingress::hdr.ethernet.$valid
+    TW0: B2(1)
+        # - bit[31..28]: ingress::hdr.ipv4.version if ingress::hdr.ipv4.$valid
+        # - bit[27..24]: ingress::hdr.ipv4.ihl if ingress::hdr.ipv4.$valid
+        # - bit[23..16]: ingress::hdr.ipv4.diffserv if ingress::hdr.ipv4.$valid
+        # - bit[15..0]: ingress::hdr.ipv4.total_len if ingress::hdr.ipv4.$valid
+    TW2: B2(1)
+        # - bit[31..16]: ingress::hdr.ipv4.identification if ingress::hdr.ipv4.$valid
+        # - bit[15..13]: ingress::hdr.ipv4.flags if ingress::hdr.ipv4.$valid
+        # - bit[12..0]: ingress::hdr.ipv4.frag_offset if ingress::hdr.ipv4.$valid
+    TB0: B2(1)  # ingress::hdr.ipv4.ttl if ingress::hdr.ipv4.$valid
+    B1: B2(1)  # ingress::hdr.ipv4.protocol if ingress::hdr.ipv4.$valid
+    TH0: B2(1)  # ingress::hdr.ipv4.hdr_checksum if ingress::hdr.ipv4.$valid
+    W2: B2(1)  # ingress::hdr.ipv4.src_addr if ingress::hdr.ipv4.$valid
+    W1: B2(1)  # ingress::hdr.ipv4.dst_addr if ingress::hdr.ipv4.$valid
+    TW1: B2(2)
+        # - bit[31..24]: ingress::hdr.icmp.type_ if ingress::hdr.icmp.$valid
+        # - bit[23..16]: ingress::hdr.icmp.code if ingress::hdr.icmp.$valid
+        # - bit[15..0]: ingress::hdr.icmp.hdr_checksum if ingress::hdr.icmp.$valid
+    W0: B2(3)
+        # - bit[31..16]: ingress::hdr.tcp.src_port if ingress::hdr.tcp.$valid
+        # - bit[15..0]: ingress::hdr.tcp.dst_port if ingress::hdr.tcp.$valid
+    TW4: B2(3)  # ingress::hdr.tcp.seq_no if ingress::hdr.tcp.$valid
+    TB2: B2(3)  # ingress::hdr.tcp.ack_no.24-31 if ingress::hdr.tcp.$valid
+    TB1: B2(3)  # ingress::hdr.tcp.ack_no.16-23 if ingress::hdr.tcp.$valid
+    TH5: B2(3)  # ingress::hdr.tcp.ack_no.0-15 if ingress::hdr.tcp.$valid
+    TW1: B2(3)
+        # - bit[31..28]: ingress::hdr.tcp.data_offset if ingress::hdr.tcp.$valid
+        # - bit[27..24]: ingress::hdr.tcp.res if ingress::hdr.tcp.$valid
+        # - bit[23..16]: ingress::hdr.tcp.flags if ingress::hdr.tcp.$valid
+        # - bit[15..0]: ingress::hdr.tcp.window if ingress::hdr.tcp.$valid
+    TW3: B2(3)
+        # - bit[31..16]: ingress::hdr.tcp.checksum if ingress::hdr.tcp.$valid
+        # - bit[15..0]: ingress::hdr.tcp.urgent_ptr if ingress::hdr.tcp.$valid
+  egress_unicast_port: H0(0..8)  # bit[8..0]: ingress::ig_intr_md_for_tm.ucast_egress_port
+  bypss_egr: B0(3..3)  # bit[3]: ingress::ig_intr_md_for_tm.bypass_egress
+  drop_ctl: B0(0..2)  # bit[2..0]: ingress::ig_intr_md_for_dprsr.drop_ctl
+parser egress:
+  start: $entry_point.start
+  hdr_len_adj: 0
+  meta_opt: 0
+  states:
+    $entry_point.start:
+      *:
+        buf_req: 0
+        next: end
+deparser egress:
+  dictionary: {}
+stage 0 ingress:
+  phase0_match SwitchIngressParser.$PORT_METADATA:
+    p4:
+      name: SwitchIngressParser.$PORT_METADATA
+      size: 288
+      preferred_match_type: exact
+      match_type: exact
+    size: 288
+    p4_param_order:
+      ig_intr_md.ingress_port: { type: exact, size: 9 }
+    format: {ig_intr_md: 0..63}
+    constant_value: 0
+    actions:
+      set_port_metadata:
+      - handle: 0x20000000
+      - p4_param_order: { ig_intr_md: 64 } 
+  ternary_match bypass_egress_bypass_egress 0:
+    p4: { name: SwitchIngress.bypass_egress.bypass_egress, size: 512 }
+    hit: [  tbl_src188 ]
+    miss:  tbl_src188
+    indirect: bypass_egress_bypass_egress$tind
+  ternary_indirect bypass_egress_bypass_egress$tind:
+    row: 1
+    bus: 1
+    format: { action: 0..0 }
+    instruction: bypass_egress_bypass_egress$tind(action, $DEFAULT)
+    actions:
+      SwitchIngress.bypass_egress.set_bypass_egress(0, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000009
+      - next_table: 0
+      - set ig_intr_md_for_tm.bypass_egress, 1
+    default_action: SwitchIngress.bypass_egress.set_bypass_egress
+  ternary_match tbl_src188 1:
+    p4: { name: tbl_src188, hidden: true }
+    gateway:
+      name: cond-4
+      input_xbar:
+        exact group 0: { 0: ig_intr_md.ingress_port }
+      row: 0
+      bus: 1
+      unit: 1
+      match: { 0: ig_intr_md.ingress_port(0..7), 8: ig_intr_md.ingress_port(8) }
+      0b*******000000000:  tbl_src185
+      miss: run_table
+      condition: 
+        expression: "(ig_intr_md.ingress_port == 0)"
+        true:  tbl_src185
+        false:  tbl_src188
+    hit: [  tbl_action_compute_fingerprint ]
+    miss:  tbl_action_compute_fingerprint
+    indirect: tbl_src188$tind
+  ternary_indirect tbl_src188$tind:
+    row: 1
+    bus: 0
+    format: { action: 0..0 }
+    instruction: tbl_src188$tind(action, $DEFAULT)
+    actions:
+      src188(1, 2):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000002
+      - next_table: 0
+      - set ig_intr_md_for_tm.ucast_egress_port, 0
+    default_action: src188
+  ternary_match tbl_src185 3:
+    p4: { name: tbl_src185, hidden: true }
+    hit: [  END ]
+    miss:  END
+    indirect: tbl_src185$tind
+  ternary_indirect tbl_src185$tind:
+    row: 0
+    bus: 1
+    format: { action: 0..0 }
+    instruction: tbl_src185$tind(action, $DEFAULT)
+    actions:
+      src185(0, 4):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000001
+      - next_table: 0
+      - set H0(0..8), 64
+    default_action: src185
+  hash_action tbl_action_compute_fingerprint 2:
+    p4: { name: tbl_action_compute_fingerprint, hidden: true }
+    row: 0
+    result_bus: 0
+    hash_dist:
+      0: { hash: 0, mask: 0xffff, shift: 0 }
+      1: { hash: 0, mask: 0xffff, shift: 0 }
+    input_xbar:
+      exact group 0: { 16: hdr.tcp.src_port, 32: hdr.tcp.dst_port, 48: hdr.ipv4.dst_addr(16..31), 64: hdr.ipv4.dst_addr(0..15), 80: hdr.ipv4.src_addr(16..31), 96: hdr.ipv4.src_addr(0..15), 112: hdr.ipv4.protocol }
+      hash 0:
+        0..15: slice(stripe(crc(0x82608edb, 0xffffffff, 0xffffffff, 104, { 8: hdr.tcp.dst_port, 24: hdr.tcp.src_port, 56: hdr.ipv4.dst_addr(16..31) }, { })), 0..15)
+      hash 1:
+        0..15: slice(stripe(crc(0x82608edb, 0xffffffff, 0xffffffff, 104, { 0: hdr.ipv4.protocol, 40: hdr.ipv4.dst_addr(0..15), 72: hdr.ipv4.src_addr(0..15), 88: hdr.ipv4.src_addr(16..31) }, { })), 0..15)
+      hash group 0:
+        table: [0, 1]
+        seed: 0x2ef0
+      exact group 0: { 16: hdr.tcp.src_port, 32: hdr.tcp.dst_port, 48: hdr.ipv4.dst_addr(16..31), 64: hdr.ipv4.dst_addr(0..15), 80: hdr.ipv4.src_addr(16..31), 96: hdr.ipv4.src_addr(0..15), 112: hdr.ipv4.protocol }
+      hash 0:
+        16..31: slice(stripe(crc(0x82608edb, 0xffffffff, 0xffffffff, 104, { 8: hdr.tcp.dst_port, 24: hdr.tcp.src_port, 56: hdr.ipv4.dst_addr(16..31) }, { })), 16..31)
+      hash 1:
+        16..31: slice(stripe(crc(0x82608edb, 0xffffffff, 0xffffffff, 104, { 0: hdr.ipv4.protocol, 40: hdr.ipv4.dst_addr(0..15), 72: hdr.ipv4.src_addr(0..15), 88: hdr.ipv4.src_addr(16..31) }, { })), 16..31)
+      hash group 0:
+        table: [0, 1]
+        seed: 0x41620000
+    gateway:
+      name: cond-5
+      input_xbar:
+        exact group 1: { 0: hdr.ipv4.protocol }
+      row: 0
+      bus: 0
+      unit: 0
+      payload_row: 0
+      payload_unit: 0
+      payload: 0x1
+      format: { action: 0..0 }
+      match: { 0: hdr.ipv4.protocol }
+      0x01: run_table
+      miss:  tbl_action_check_membership_stage_three
+      condition: 
+        expression: "(hdr.ipv4.protocol == 1)"
+        true:  tbl_src190
+        false:  tbl_action_check_membership_stage_three
+    next:  tbl_src190
+    action_bus: { 96..99 : hash_dist(0, 1) }
+    instruction: tbl_action_compute_fingerprint(action, $DEFAULT)
+    actions:
+      SwitchIngress.action_compute_fingerprint(1, 3):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000004
+      - next_table: 0
+      - set W3, hash_dist(0, 1, 0..31)
+    default_action: SwitchIngress.action_compute_fingerprint
+stage 1 ingress:
+  dependency: match
+  ternary_match tbl_src190 2:
+    p4: { name: tbl_src190, hidden: true }
+    hit: [  END ]
+    miss:  END
+    indirect: tbl_src190$tind
+  ternary_indirect tbl_src190$tind:
+    row: 0
+    bus: 0
+    format: { action: 0..0 }
+    instruction: tbl_src190$tind(action, $DEFAULT)
+    actions:
+      src190(0, 3):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000003
+      - next_table: 0
+      - set H0(0..8), 64
+    default_action: src190
+  hash_action tbl_action_check_membership_stage_three 0:
+    p4: { name: tbl_action_check_membership_stage_three, hidden: true }
+    row: 0
+    result_bus: 1
+    hash_dist:
+      0: { hash: 0, mask: 0x3ff, shift: 5 }
+    input_xbar:
+      exact group 0: { 84: ig_md.fingerprint(20..29) }
+      hash 1:
+        0..9: ig_md.fingerprint(20..29)
+      hash group 0:
+        table: [1]
+        seed: 0x0
+    gateway:
+      name: tbl_action_check_membership_stage_three-gateway
+      row: 0
+      bus: 0
+      unit: 1
+      0x0:  tbl_action_check_membership_stage_two
+      miss:  tbl_action_check_membership_stage_two
+      condition: 
+        expression: "true(always hit)"
+        true:  tbl_action_check_membership_stage_two
+        false:  tbl_action_check_membership_stage_two
+    next: []
+    action_bus: { 0 : tbl_action_check_membership_stage_three$salu.SwitchIngress.stage_three(0..7) }
+    stateful: tbl_action_check_membership_stage_three$salu.SwitchIngress.stage_three(hash_dist 0, $DEFAULT, $DEFAULT)
+    instruction: tbl_action_check_membership_stage_three($DEFAULT, $DEFAULT)
+    actions:
+      SwitchIngress.action_check_membership_stage_three(0, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000007
+      - next_table: 0
+      - set ig_md.stage_three_result, tbl_action_check_membership_stage_three$salu.SwitchIngress.stage_three
+      - tbl_action_check_membership_stage_three$salu.SwitchIngress.stage_three(stage_three_lookup_0, $hash_dist)
+    default_action: SwitchIngress.action_check_membership_stage_three
+  stateful tbl_action_check_membership_stage_three$salu.SwitchIngress.stage_three:
+    p4: { name: SwitchIngress.stage_three, size: 1024 }
+    row: 11
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 11
+    input_xbar:
+      exact group 0: { 64: ig_md.fingerprint }
+    data_bytemask: 15
+    format: { lo: 32 }
+    actions:
+      stage_three_lookup_0:
+      - equ lo, lo, -phv_lo
+      - alu_a cmplo, hi, 1
+      - output cmplo, alu_hi
+  hash_action tbl_action_check_membership_stage_two 1:
+    p4: { name: tbl_action_check_membership_stage_two, hidden: true }
+    row: 0
+    result_bus: 0
+    hash_dist:
+      1: { hash: 0, mask: 0x3ff, shift: 5 }
+    input_xbar:
+      exact group 0: { 74: ig_md.fingerprint(10..19) }
+      hash 1:
+        16..25: ig_md.fingerprint(10..19)
+      hash group 0:
+        table: [1]
+        seed: 0x0
+    gateway:
+      name: tbl_action_check_membership_stage_two-gateway
+      row: 0
+      bus: 0
+      unit: 0
+      0x0:  tbl_action_check_membership_stage_one
+      miss:  tbl_action_check_membership_stage_one
+      condition: 
+        expression: "true(always hit)"
+        true:  tbl_action_check_membership_stage_one
+        false:  tbl_action_check_membership_stage_one
+    next: []
+    action_bus: { 2 : tbl_action_check_membership_stage_two$salu.SwitchIngress.stage_two(0..7) }
+    stateful: tbl_action_check_membership_stage_two$salu.SwitchIngress.stage_two(hash_dist 1, $DEFAULT, $DEFAULT)
+    instruction: tbl_action_check_membership_stage_two($DEFAULT, $DEFAULT)
+    actions:
+      SwitchIngress.action_check_membership_stage_two(0, 2):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000006
+      - next_table: 0
+      - set ig_md.stage_two_result, tbl_action_check_membership_stage_two$salu.SwitchIngress.stage_two
+      - tbl_action_check_membership_stage_two$salu.SwitchIngress.stage_two(stage_two_lookup_0, $hash_dist)
+    default_action: SwitchIngress.action_check_membership_stage_two
+  stateful tbl_action_check_membership_stage_two$salu.SwitchIngress.stage_two:
+    p4: { name: SwitchIngress.stage_two, size: 1024 }
+    row: 15
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 15
+    input_xbar:
+      exact group 1: { 64: ig_md.fingerprint }
+    data_bytemask: 15
+    format: { lo: 32 }
+    actions:
+      stage_two_lookup_0:
+      - equ lo, lo, -phv_lo
+      - alu_a cmplo, hi, 1
+      - output cmplo, alu_hi
+stage 2 ingress:
+  dependency: action
+  hash_action tbl_action_check_membership_stage_one 0:
+    p4: { name: tbl_action_check_membership_stage_one, hidden: true }
+    row: 0
+    result_bus: 0
+    hash_dist:
+      0: { hash: 0, mask: 0x3ff, shift: 5 }
+    input_xbar:
+      exact group 0: { 64: ig_md.fingerprint(0..9) }
+      hash 1:
+        0..9: ig_md.fingerprint(0..9)
+      hash group 0:
+        table: [1]
+        seed: 0x0
+    gateway:
+      name: tbl_action_check_membership_stage_one-gateway
+      row: 0
+      bus: 0
+      unit: 0
+      0x0:  tbl_drop
+      miss:  tbl_drop
+      condition: 
+        expression: "true(always hit)"
+        true:  tbl_drop
+        false:  tbl_drop
+    next: []
+    action_bus: { 0 : tbl_action_check_membership_stage_one$salu.SwitchIngress.stage_one(0..7) }
+    stateful: tbl_action_check_membership_stage_one$salu.SwitchIngress.stage_one(hash_dist 0, $DEFAULT, $DEFAULT)
+    instruction: tbl_action_check_membership_stage_one($DEFAULT, $DEFAULT)
+    actions:
+      SwitchIngress.action_check_membership_stage_one(0, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000005
+      - next_table: 0
+      - set ig_md.stage_one_result, tbl_action_check_membership_stage_one$salu.SwitchIngress.stage_one
+      - tbl_action_check_membership_stage_one$salu.SwitchIngress.stage_one(stage_one_lookup_0, $hash_dist)
+    default_action: SwitchIngress.action_check_membership_stage_one
+  stateful tbl_action_check_membership_stage_one$salu.SwitchIngress.stage_one:
+    p4: { name: SwitchIngress.stage_one, size: 1024 }
+    row: 15
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 15
+    input_xbar:
+      exact group 0: { 64: ig_md.fingerprint }
+    data_bytemask: 15
+    format: { lo: 32 }
+    actions:
+      stage_one_lookup_0:
+      - equ lo, lo, -phv_lo
+      - alu_a cmplo, hi, 1
+      - output cmplo, alu_hi
+stage 3 ingress:
+  dependency: match
+  ternary_match tbl_drop 0:
+    p4: { name: tbl_drop, hidden: true }
+    gateway:
+      name: cond-6
+      input_xbar:
+        exact group 0: { 4: ig_md.stage_one_result, 5: ig_md.stage_three_result, 12: ig_md.stage_two_result }
+      row: 0
+      bus: 0
+      unit: 0
+      match: { 4: ig_md.stage_one_result, 12: ig_md.stage_two_result, 21: ig_md.stage_three_result }
+      0b*******************1:  END
+      0b***********1********:  END
+      0b**1*****************:  END
+      miss: run_table
+      condition: 
+        expression: "(ig_md.stage_one_result || ig_md.stage_two_result || ig_md.stage_three_result)"
+        true:  END
+        false:  tbl_drop
+    hit: [  END ]
+    miss:  END
+    indirect: tbl_drop$tind
+  ternary_indirect tbl_drop$tind:
+    row: 0
+    bus: 0
+    format: { action: 0..0 }
+    instruction: tbl_drop$tind(action, $DEFAULT)
+    actions:
+      SwitchIngress.drop(1, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000008
+      - next_table: 0
+      - set ig_intr_md_for_dprsr.drop_ctl, 1
+    default_action: SwitchIngress.drop
+
+
+primitives: "src.prim.json"
+dynhash: "src.dynhash.json"
