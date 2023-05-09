@@ -26,7 +26,7 @@ def load_module(file_name, module_name):
 REPO_PATH = '/home/alex'
 
 util = load_module(REPO_PATH + "/tofino_acf_firewall/util.py", "utils")
-from tofino_acf_firewall.experiments.ACF_experiments import ACF
+from ACF_experiments import ACF
 
 
 # A/S ratio (Michael's sec4.2 experiment)
@@ -129,7 +129,7 @@ if __name__ == "__main__":
             tracePath, True, 0.001)
 
         # Get stats of this trace
-        n_flows, n_pkts = util.load_trace(fiveTuple_list)
+        n_flows, n_pkts = util.get_trace_stats(fiveTuple_list)
 
         print(n_flows, n_pkts)
 
