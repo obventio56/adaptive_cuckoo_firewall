@@ -14,6 +14,7 @@ We've created an implementation of a version our design for tofino switch with 3
 - Client to send traffic through switch to host
 
 #### To run the program:
+0. Prepare trace. We've provided a utility `preprocess_caida_trace.py` that takes a PCAP file and extracts 5-tuples for each packet. Please run this on your test data and set `TRACE_PATH` in `/tofino_poc/run_caida_trace.py` to point to the output.
 
 1. Set variables:
   ```
