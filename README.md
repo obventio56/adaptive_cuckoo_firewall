@@ -17,6 +17,8 @@ We've created an implementation of a version our design for tofino switch with 3
 - Host to send ICMP packets
 - Client to send traffic through switch to host
 
+All of the controller/host/client code is packaged in one python file within `tofino_poc/tests/run_caida_trace.py` to use the Tofino test harness
+
 #### To run the program:
 0. Prepare trace. We've provided a utility `preprocess_caida_trace.py` that takes a PCAP file and extracts 5-tuples for each packet. Please run this on your test data and set `TRACE_PATH` in `/tofino_poc/run_caida_trace.py` to point to the output.
 
