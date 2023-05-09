@@ -5,9 +5,9 @@ This repository contains code to accompany a poster presented at the NSDI '23 st
 - [The written poster proposal](poster_proposal.pdf)
 
 ### Repository structure
-- tofino_poc - p4 code + controller logic as well as a basic host 
-- ACF.py - cuckoo filter class
-- experiments - code to generate charts in poster
+- `tofino_poc` - p4 code + controller logic as well as a basic host 
+- `ACF.py` - cuckoo filter class
+- `experiments` - code to generate charts in poster
 
 ### Tofino Proof of Concept
 
