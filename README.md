@@ -1,5 +1,9 @@
 # Implementing Adaptive Cuckoo Firewall for Programmable Switch 
 
+This repository contains code to accompany a poster presented at the NSDI '23 student poster session. You can view:
+- [A copy of the poster](poster.png)
+- [The written poster proposal](poster_proposal.pdf)
+
 ### Repository structure
 - tofino_poc - p4 code + controller logic as well as a basic host 
 - ACF.py - cuckoo filter class
