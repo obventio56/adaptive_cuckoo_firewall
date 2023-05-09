@@ -1,9 +1,6 @@
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 import json
 import statistics as st
-from util import *
-from supported_adaptations import ACF
 from matplotlib.ticker import FormatStrFormatter
 
 
@@ -12,7 +9,7 @@ Y = []
 Err = []
 
 for i in range(2, 17):
-    f = open('param_results/stages{}.json'.format(i))
+    f = open('results/stages{}.json'.format(i))
 
     # returns JSON object as
     # a dictionary

@@ -40,7 +40,7 @@ def load_module(file_name, module_name):
     spec.loader.exec_module(module)
     return module
 
-utils = load_module(REPO_PATH + "/tofino_acf_firewall/tofino_poc/util.py", "utils")
+utils = load_module(REPO_PATH + "/tofino_acf_firewall/util.py", "utils")
 ACF = load_module(REPO_PATH + "/tofino_acf_firewall/ACF.py", "ACF")
 
 p4_program_name = "src"

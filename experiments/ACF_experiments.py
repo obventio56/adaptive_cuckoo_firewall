@@ -1,19 +1,22 @@
+"""
+This file contains a slight variation of the main ACF. The only modifications are enabling arbitrary fingerprint lengths
+and a somwhat simpler hash function since we do not need to match byte for byte with the tofino C-like representation. 
+"""
+
 import crcmod
 import numpy as np
 
 """
-Generate fingerprint from packed 5-tuple
+Generate fingerprint from int representing 5-tuple
 """
-def crc_from_five_tuple(packedFiveTuple):
+def crc_from_eth(src, fingerprintLength):
     hash2_func = crcmod.predefined.mkCrcFun('crc-32-bzip2')
-    return hash2_func(packedFiveTuple)
+    return hash2_func(src.to_bytes(13, "little")) & fingerprintLength
 
-"""
-The ACF class implements all our adaptive cuckoo filter logic.
-The insert and adapt_false_positive methods have more detailed comments on their functionality.
-"""
+
 class ACF():
-    def __init__(self, d, b, c):
+    def __init__(self, d, b, c, fingerprintLength):
+        self.fingerprintLength = fingerprintLength
         self.c = c
         self.bexp = b
         self.b = b
@@ -25,11 +28,16 @@ class ACF():
     Compute the bucket index for a given fingerprint and table index
     """
 
-    def block_hash(self, packedFiveTuple, i):
+    def block_hash(self, x, i):
         hash2_func = crcmod.predefined.mkCrcFun('crc-32-bzip2')
-        srcInt = hash2_func(packedFiveTuple)
-        srcBitString = f'{srcInt:032b}'[::-1]
-        return int(srcBitString[i*10: (i + 1)*10][::-1], 2)
+        srcByteString = x.to_bytes(13, "little")
+        rotatedByteString = srcByteString[i:] + srcByteString[:i]
+
+        if i == 0:
+            assert srcByteString == rotatedByteString
+            assert hash2_func(x.to_bytes(13, "little")) % self.b == hash2_func(rotatedByteString) % self.b
+
+        return hash2_func(rotatedByteString) % self.b
 
     """
     Find an insertion path for x by running BFS. An insertion path represents all the entries that need to 
@@ -46,10 +54,10 @@ class ACF():
                 break
 
             [[n, nbadStates], path] = searchQueue.pop(0)
+            # fingerprint = crc_from_eth(n, es)
             for i in range(0, self.d):
                 if i in nbadStates:
                     continue
-
 
                 # Calculate new path if we inserted into this table
                 h = self.block_hash(x, i)
@@ -74,20 +82,21 @@ class ACF():
     def insert(self, x, badStates=[][:]):
 
         insertionPath = self.find_insertion_path(x, badStates.copy())
+
         if insertionPath is False:
             return False
 
         # Setup initial insertion
         toInsert = [x, badStates.copy()]
 
+
         for i in range(0, len(insertionPath)):
 
             if toInsert is None:
                 break
 
-
             legTable = insertionPath[i]
-            toInsertFingerprint = crc_from_five_tuple(toInsert[0])
+            toInsertFingerprint = crc_from_eth(toInsert[0], self.fingerprintLength)
             h = self.block_hash(toInsert[0], legTable)
 
             toInsertTmp = None
@@ -104,7 +113,7 @@ class ACF():
     """ Search tables for fingerprint and return indices """
 
     def membership_index(self, x):
-        fingerprint = crc_from_five_tuple(x)
+        fingerprint = crc_from_eth(x, self.fingerprintLength)
         for i in range(0, self.d):
             b = self.block_hash(x, i)
             for j in range(0, self.c):
@@ -125,6 +134,7 @@ class ACF():
     def adapt_false_positive(self, false_x):
 
         membershipIndex = self.membership_index(false_x)
+
         if membershipIndex == False:
             raise "False positive not in ACF"
 
@@ -200,6 +210,6 @@ class ACF():
                 if tableVal is None:
                     tableVal = 0
 
-                if not tableVal*4 == regState[i][j]:
-                    delta.append((i, j, tableVal))
+                if not tableVal == regState[i][j]:
+                    delta.append((i, j, tableVal // 4))
         return delta
