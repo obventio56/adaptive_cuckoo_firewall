@@ -43,3 +43,16 @@ We've created an implementation of a version our design for tofino switch with 3
   ```
   sudo -E $BF_SDE_PATH/run_p4_tests.sh -p src -t $REPO_PATH/tofino_acf_firewall/tofino_poc/tests
   ```
+
+### Experiments
+
+Our poster has three major results which each corrosponds to a python file used to generate it. Since the properties of the design are independent from interfacing with the switch, these experiments do not require the Tofino simulation. 
+
+1. Number of Supported Adaptations at Occupancy -> `experiments/adaptations_at_occupancy.py`
+2. Optimal Stage Count -> `experiments/optimal_stage_count.py`
+3. CAIDA Trace False Positve Rate -> `experiments/CAIDA_trace_fp_rate.py`
+
+#### Making graphs
+
+Each experiment script produces output in the `results` folder. We also have scripts to generate graphs from these results. That code can be found in `experiments/make_graphs`. The usage of each script is slightly different so it is best to read the file first. 
+
